@@ -3,8 +3,7 @@
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
 {
-    setupWidgets();
-    configureTreeWidget();
+    setupWidgets();    
     addWidgetsToLayout();
     setCentralWidget(centralWidget);
 }
@@ -24,6 +23,7 @@ void MainWindow::setupWidgets()
     controlAndMonitorTabLayout = new QGridLayout(controlAndMonitorTab);
 
     sensorDataTreeWidget = new QTreeWidget(tabWidget);
+    configureTreeWidget();
     rightWidgetContainer = new QWidget(tabWidget);
     rightWidgetLayout = new QVBoxLayout(rightWidgetContainer);
 
@@ -44,7 +44,14 @@ void MainWindow::setupWidgets()
 
 void MainWindow::configureTreeWidget()
 {
-
+    sensorDataTreeWidget->setColumnCount(2);
+    sensorDataTreeWidget->setAlternatingRowColors(true);
+    QTreeWidgetItem *rooms = new QTreeWidgetItem(sensorDataTreeWidget);
+    rooms->setText(0, tr("Room 1"));
+    QTreeWidgetItem *osloItem = new QTreeWidgetItem(rooms);
+    osloItem->setText(0, tr("Temperature"));
+    osloItem->setText(1, tr("22"));
+    osloItem->setText(2, "°C");
 }
 
 void MainWindow::addWidgetsToLayout()
