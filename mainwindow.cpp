@@ -34,8 +34,6 @@ void MainWindow::setupWidgets()
     buttonWidgetLayout = new QHBoxLayout(buttonWidgetContainer);
 
     roomControlWidgets = new RoomControlWidget*[4];
-    roomItems = new QTreeWidgetItem*[8];
-    rooms = new QTreeWidgetItem*[4];
     for(int i = 0; i < 4; i++) {
         roomControlWidgets[i] = new RoomControlWidget(roomControlGroupBox, i+1);
     }
@@ -52,26 +50,25 @@ void MainWindow::configureTreeWidget()
     columnNames->push_back("Values");
     sensorDataTreeWidget->setColumnCount(2);
     sensorDataTreeWidget->setHeaderLabels(*columnNames);
-
+    sensorDataTreeWidget->setColumnWidth(0, 120);
+    sensorDataTreeWidget->setColumnWidth(1, 80);
     sensorDataTreeWidget->setAlternatingRowColors(true);
 
-
     for(int i = 0; i < 4; i++) {
-        rooms[i] = new QTreeWidgetItem(sensorDataTreeWidget);
+        QTreeWidgetItem *rooms = new QTreeWidgetItem(sensorDataTreeWidget);
         QString room("Room ");
         QString number;
         number.setNum(i + 1);
         room.append(number);
-        rooms[i]->setText(0, room);
+        rooms->setText(0, room);
+        rooms->setExpanded(true);
 
-        roomItems[i*2] = new QTreeWidgetItem(rooms[i]);
-        roomItems[i*2]->setFlags(roomItems[i*2]->flags() | Qt::ItemIsEditable);
-        roomItems[i*2]->setText(0, tr("Temperature"));
-        roomItems[i*2]->setText(1, tr("22 °C"));
-        roomItems[i*2 + 1] = new QTreeWidgetItem(rooms[i]);
-        roomItems[i*2 + 1]->setFlags(roomItems[i*2 + 1]->flags() | Qt::ItemIsEditable);
-        roomItems[i*2 + 1]->setText(0, tr("Brightness"));
-        roomItems[i*2 + 1]->setText(1, tr("50 %"));
+        QTreeWidgetItem *temperature = new QTreeWidgetItem(rooms);
+        temperature->setText(0, tr("Temperature"));
+        temperature->setText(1, tr("22 °C"));
+        QTreeWidgetItem *brightness = new QTreeWidgetItem(rooms);
+        brightness->setText(0, tr("Brightness"));
+        brightness->setText(1, tr("50 %"));
     }
 
 }
