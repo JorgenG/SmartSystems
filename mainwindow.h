@@ -11,6 +11,7 @@
 #include <QTreeWidget>
 #include <QGroupBox>
 #include <QPushButton>
+#include <QTreeWidgetItem>
 
 class MainWindow : public QMainWindow
 {
@@ -30,6 +31,10 @@ private:
     QVBoxLayout *rightWidgetLayout;
     QHBoxLayout *buttonWidgetLayout, *roomControlGroupBoxLayout;
     QPushButton *toggleAutoModeButton, *startButton, *exitButton;
+
+
+    QTreeWidgetItem* *roomItems;
+    QTreeWidgetItem* *rooms;
 
     void setupWidgets();
     void configureTreeWidget();
