@@ -32,13 +32,12 @@ private:
     QHBoxLayout *buttonWidgetLayout, *roomControlGroupBoxLayout;
     QPushButton *toggleAutoModeButton, *startButton, *exitButton;
 
-
-    QTreeWidgetItem* *roomItems;
-    QTreeWidgetItem* *rooms;
-
     void setupWidgets();
     void configureTreeWidget();
     void addWidgetsToLayout();
+
+public slots:
+    void updateSensorData();
 
 };
 
