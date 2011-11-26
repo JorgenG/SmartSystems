@@ -12,9 +12,23 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    roomcontrolwidget.cpp
+    roomcontrolwidget.cpp \
+    shareddata.cpp \
+    roomdata.cpp \
+    shareddata/shareddata.cpp \
+    shareddata/roomdata.cpp
 
 HEADERS  += mainwindow.h \
-    roomcontrolwidget.h
+    roomcontrolwidget.h \
+    shareddata.h \
+    roomdata.h \
+    shareddata/shareddata.h \
+    shareddata/roomdata.h
+
+
+
+
+
+
 
 
