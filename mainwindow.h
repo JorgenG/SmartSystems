@@ -22,8 +22,8 @@ public:
 
 private:
     RoomControlWidget* *roomControlWidgets;
-    QWidget *centralWidget, *rightWidgetContainer, *buttonWidgetContainer;
-    QGridLayout *centralLayout;
+    QWidget *centralWidget, *controlAndMonitorTab, *rightWidgetContainer, *buttonWidgetContainer;
+    QGridLayout *centralLayout, *controlAndMonitorTabLayout;
     QGroupBox *roomControlGroupBox;
     QTreeWidget *sensorDataTreeWidget;
     QTabWidget *tabWidget;
