@@ -15,7 +15,7 @@
 #define ABSTRACTAPPENDER_H
 
 // Local
-#include <Logger.h>
+#include "Logger.h"
 
 // Qt
 #include <QMutex>
