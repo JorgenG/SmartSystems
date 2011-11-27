@@ -39,7 +39,7 @@ signals:
     void autoBrightnessChanged(int newValue);
 
 public slots:
-    void autoModeToggled();
+    void automodeChanged(bool newAutomode);
     void ledValueRegulated(int newValue);
     void fanValueRegulated(int newValue);
     void heaterRegulated(int newValue);

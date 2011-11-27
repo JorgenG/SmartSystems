@@ -7,6 +7,10 @@ MainWindow::MainWindow(QWidget *parent)
     setupWidgets();    
     addWidgetsToLayout();
     setCentralWidget(centralWidget);
+    automode = false;
+    connect(exitButton, SIGNAL(clicked()), this, SIGNAL(exitButtonClicked()));
+    for(int i = 0; i < 4; i++)
+        connect(toggleAutoModeButton, SIGNAL(clicked(bool)), roomControlWidgets[i], SLOT(automodeChanged(bool)));
 }
 
 MainWindow::~MainWindow()
@@ -41,6 +45,7 @@ void MainWindow::setupWidgets()
 
 
     toggleAutoModeButton = new QPushButton("Toggle AutoMode", buttonWidgetContainer);
+    toggleAutoModeButton->setCheckable(true);
     startButton = new QPushButton("Start", buttonWidgetContainer);
     exitButton = new QPushButton("Exit", buttonWidgetContainer);
 }
