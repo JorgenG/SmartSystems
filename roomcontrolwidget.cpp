@@ -25,16 +25,17 @@ void RoomControlWidget::setupConnections()
 
 void RoomControlWidget::setupLabels()
 {
-    QString roomName("Room: ");
+    QString roomName("Room ");
     QString roomNumber;
     roomNumber.setNum(m_iRoomNumber);
     roomName.append(roomNumber);
+    roomName.append(":");
     m_RoomTitleLabel = new QLabel(roomName, this);
 
-    QString autoTempText("Temp(Auto):");
+    QString autoTempText("Temp(Auto)");
     m_TempTextLabel = new QLabel(autoTempText, this);
 
-    QString autoBrightnessText("Brightness:");
+    QString autoBrightnessText("Brightness (%)");
     m_BrightnessTextLabel = new QLabel(autoBrightnessText, this);
 
     QString ledText("LED");
@@ -61,10 +62,12 @@ void RoomControlWidget::setupFunctionalWidgets()
     m_TempSpinBox->setDecimals(1);
     m_TempSpinBox->setRange(5.0, 40.0);
     m_TempSpinBox->setSingleStep(0.5);
+    m_TempSpinBox->setValue(22.0);
 
     m_BrightnessSpinBox = new QSpinBox(this);
     m_BrightnessSpinBox->setRange(0, 100);
     m_BrightnessSpinBox->setSingleStep(5);
+    m_BrightnessSpinBox->setValue(50);
 
     m_LEDFANControlsGrid = new QGridLayout(this);
 
