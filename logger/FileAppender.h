@@ -15,7 +15,7 @@
 #define FILEAPPENDER_H
 
 // Logger
-#include <AbstractStringAppender.h>
+#include "AbstractStringAppender.h"
 
 // Qt
 #include <QFile>
