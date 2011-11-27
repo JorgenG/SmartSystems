@@ -63,11 +63,13 @@ void RoomControlWidget::setupFunctionalWidgets()
     m_TempSpinBox->setRange(5.0, 40.0);
     m_TempSpinBox->setSingleStep(0.5);
     m_TempSpinBox->setValue(22.0);
+    m_TempSpinBox->setEnabled(false);
 
     m_BrightnessSpinBox = new QSpinBox(this);
     m_BrightnessSpinBox->setRange(0, 100);
     m_BrightnessSpinBox->setSingleStep(5);
     m_BrightnessSpinBox->setValue(50);
+    m_BrightnessSpinBox->setEnabled(false);
 
     m_LEDFANControlsGrid = new QGridLayout(this);
 
@@ -93,8 +95,13 @@ void RoomControlWidget::addWidgetsToLayout()
     m_VBoxLayout->addWidget(m_BrightnessSpinBox, 0, Qt::AlignCenter);
 }
 
-void RoomControlWidget::autoModeToggled()
+void RoomControlWidget::automodeChanged(bool newAutomode)
 {
+    m_BrightnessSpinBox->setEnabled(newAutomode);
+    m_TempSpinBox->setEnabled(newAutomode);
+    m_VLEDSlider->setEnabled(!newAutomode);
+    m_VFANSlider->setEnabled(!newAutomode);
+    m_HeaterCheckBox->setEnabled(!newAutomode);
 }
 
 void RoomControlWidget::ledValueRegulated(int newValue)
