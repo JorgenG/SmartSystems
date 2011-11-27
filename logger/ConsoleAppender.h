@@ -14,7 +14,7 @@
 #ifndef CONSOLEAPPENDER_H
 #define CONSOLEAPPENDER_H
 
-#include <AbstractStringAppender.h>
+#include "AbstractStringAppender.h"
 
 //! ConsoleAppender is the simple appender that writes the log records to the std::cerr output stream.
 class ConsoleAppender : public AbstractStringAppender

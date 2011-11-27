@@ -15,7 +15,7 @@
 #define ABSTRACTSTRINGAPPENDER_H
 
 // Local
-#include <AbstractAppender.h>
+#include "AbstractAppender.h"
 
 // Qt
 #include <QReadWriteLock>
