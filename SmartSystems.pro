@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT       += core gui network
 
 TARGET = SmartSystems
 TEMPLATE = app
@@ -12,9 +12,17 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    roomcontrolwidget.cpp
+    roomcontrolwidget.cpp \
+    server/server.cpp \
+    server/connection.cpp
 
 HEADERS  += mainwindow.h \
-    roomcontrolwidget.h
+    roomcontrolwidget.h \
+    server/server.h \
+    server/connection.h
+
+
+
+
 
 
