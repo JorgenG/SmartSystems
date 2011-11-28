@@ -103,15 +103,3 @@ void RoomControlWidget::automodeChanged(bool newAutomode)
     m_VFANSlider->setEnabled(!newAutomode);
     m_HeaterCheckBox->setEnabled(!newAutomode);
 }
-
-void RoomControlWidget::ledValueRegulated(int newValue)
-{
-}
-
-void RoomControlWidget::fanValueRegulated(int newValue)
-{
-}
-
-void RoomControlWidget::heaterRegulated(int newValue)
-{
-}
