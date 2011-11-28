@@ -107,21 +107,12 @@ void MainWindow::addWidgetsToLayout()
 void MainWindow::updateSensorData()
 {
     QTreeWidgetItemIterator itemIterator(sensorDataTreeWidget, QTreeWidgetItemIterator::NoChildren);
-    (*itemIterator)->setText(1, "Temp 1");
-    itemIterator++;
-    (*itemIterator)->setText(1, "Brightness 1");
-    itemIterator++;
-    (*itemIterator)->setText(1, "Temp 2");
-    itemIterator++;
-    (*itemIterator)->setText(1, "Brightness 2");
-    itemIterator++;
-    (*itemIterator)->setText(1, "Temp 3");
-    itemIterator++;
-    (*itemIterator)->setText(1, "Brightness 3");
-    itemIterator++;
-    (*itemIterator)->setText(1, "Temp 4");
-    itemIterator++;
-    (*itemIterator)->setText(1, "Brightness 4");
-    itemIterator++;
-
+    (*itemIterator++)->setText(1, "Temp 1");
+    (*itemIterator++)->setText(1, "Brightness 1");
+    (*itemIterator++)->setText(1, "Temp 2");
+    (*itemIterator++)->setText(1, "Brightness 2");
+    (*itemIterator++)->setText(1, "Temp 3");
+    (*itemIterator++)->setText(1, "Brightness 3");
+    (*itemIterator++)->setText(1, "Temp 4");
+    (*itemIterator++)->setText(1, "Brightness 4");
 }
