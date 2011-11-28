@@ -8,6 +8,6 @@ int main(int argc, char *argv[])
     MainWindow w;
     w.show();
     QObject::connect(&w, SIGNAL(exitButtonClicked()), qApp, SLOT(quit()));
-
+    // EN kommentar
     return a.exec();
 }
