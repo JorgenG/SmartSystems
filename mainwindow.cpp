@@ -11,6 +11,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(exitButton, SIGNAL(clicked()), this, SIGNAL(exitButtonClicked()));
     for(int i = 0; i < 4; i++)
         connect(toggleAutoModeButton, SIGNAL(clicked(bool)), roomControlWidgets[i], SLOT(automodeChanged(bool)));
+    updateSensorData();
 }
 
 MainWindow::~MainWindow()
