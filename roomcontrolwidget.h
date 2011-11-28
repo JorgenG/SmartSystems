@@ -40,9 +40,6 @@ signals:
 
 public slots:
     void automodeChanged(bool newAutomode);
-    void ledValueRegulated(int newValue);
-    void fanValueRegulated(int newValue);
-    void heaterRegulated(int newValue);
 
 };
 
