@@ -4,6 +4,8 @@
 #include <QThread>
 #include <QTcpServer>
 
+#include "logger/Logger.h"
+
 class Server : public QThread
 {
 public:
