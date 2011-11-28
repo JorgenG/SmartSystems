@@ -10,7 +10,7 @@ void Server::run()
 {
     if(!tcpServer->listen(QHostAddress::LocalHost, 6999))
     {
-
-
+        LOG_ERROR(tcpServer->errorString());
     }
+
 }
