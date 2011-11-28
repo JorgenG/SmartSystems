@@ -9,7 +9,6 @@ QT       += core gui network
 TARGET = SmartSystems
 TEMPLATE = app
 
-
 SOURCES += main.cpp\
         mainwindow.cpp \
         roomcontrolwidget.cpp \
@@ -19,7 +18,10 @@ SOURCES += main.cpp\
         logger/FileAppender.cpp \
         logger/ConsoleAppender.cpp \
         logger/AbstractStringAppender.cpp \
-        logger/AbstractAppender.cpp
+        logger/AbstractAppender.cpp \
+        shareddata/shareddata.cpp \
+        shareddata/roomdata.cpp \
+        shareddata/newoutputhandler.cpp
 
 HEADERS += mainwindow.h \
         roomcontrolwidget.h \
@@ -29,5 +31,7 @@ HEADERS += mainwindow.h \
         logger/FileAppender.h \
         logger/ConsoleAppender.h \
         logger/AbstractStringAppender.h \
-        logger/AbstractAppender.h
-
+        logger/AbstractAppender.h \
+        shareddata/shareddata.h \
+        shareddata/roomdata.h \
+        shareddata/newoutputhandler.h
