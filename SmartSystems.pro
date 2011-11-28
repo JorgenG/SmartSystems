@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT       += core gui network
 
 TARGET = SmartSystems
 TEMPLATE = app
@@ -13,6 +13,8 @@ TEMPLATE = app
 SOURCES += main.cpp\
         mainwindow.cpp \
         roomcontrolwidget.cpp \
+        server/server.cpp \
+        server/connection.cpp \
         logger/Logger.cpp \
         logger/FileAppender.cpp \
         logger/ConsoleAppender.cpp \
@@ -21,12 +23,11 @@ SOURCES += main.cpp\
 
 HEADERS += mainwindow.h \
         roomcontrolwidget.h \
+        server/server.h \
+        server/connection.h \
         logger/Logger.h \
         logger/FileAppender.h \
         logger/ConsoleAppender.h \
         logger/AbstractStringAppender.h \
         logger/AbstractAppender.h
-
-
-
 
