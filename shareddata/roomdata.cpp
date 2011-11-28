@@ -7,7 +7,6 @@ RoomData::RoomData()
     led = 50;
     fanspeed = 0;
     heater = false;
-    automode = false;
     roomLock = new QMutex();
 }
 
