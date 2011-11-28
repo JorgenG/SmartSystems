@@ -6,7 +6,6 @@
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    SharedData *sharedData = new SharedData();
     NewOutputHandler *newOutputHandler = new NewOutputHandler();
     QObject::connect(sharedData, SIGNAL(dataChangedInRoom(int,int)),
             newOutputHandler, SLOT(dataChangedInRoom(int,int)));

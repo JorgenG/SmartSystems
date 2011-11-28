@@ -1,5 +1,7 @@
 #include "shareddata.h"
 
+SharedData *sharedData = new SharedData();
+
 SharedData::SharedData(QObject *parent) :
                        QObject(parent)
 {

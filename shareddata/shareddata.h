@@ -46,4 +46,6 @@ signals:
     void autoModeChanged(bool newAutomode);
 };
 
+extern SharedData *sharedData;
+
 #endif // SHAREDDATA_H
