@@ -2,16 +2,6 @@
 #include <QStringList>
 #include <QMutex>
 
-class LogEntry {
-public:
-        LogEntry(QString errorMessage);
-        QString getErrorStringWithTimestamp();
-private:
-        char m_dateStr[9];
-        char m_timeStr[9];
-        QString m_errorMessage;
-};
-
 class Logger {
 public: 
 	Logger();
@@ -23,6 +13,8 @@ public:
 private:
         QMutex *loggerLock;
         QStringList *logEntries;
+        char m_dateStr[9];
+        char m_timeStr[9];
 };
 
 extern Logger *logger;
