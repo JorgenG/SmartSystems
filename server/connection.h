@@ -3,6 +3,7 @@
 
 #include <QThread>
 #include <QTcpSocket>
+#include <QDomDocument>
 
 class Connection : public QThread
 {
@@ -11,6 +12,7 @@ public:
     void run();
 private:
     QTcpSocket *socketConnection;
+    QDomDocument *xmlDocument;
 };
 
 #endif // CONNECTION_H

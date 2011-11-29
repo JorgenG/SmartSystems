@@ -4,7 +4,7 @@
 #include <QThread>
 #include <QTcpServer>
 
-#include "logger/Logger.h"
+#include "Logger.h"
 
 class Server : public QThread
 {

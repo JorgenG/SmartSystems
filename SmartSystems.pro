@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui network
+QT       += core gui network xml
 
 TARGET = SmartSystems
 TEMPLATE = app
@@ -16,7 +16,8 @@ SOURCES += main.cpp\
         server/connection.cpp \
         shareddata/shareddata.cpp \
         shareddata/roomdata.cpp \
-        shareddata/newoutputhandler.cpp
+        shareddata/newoutputhandler.cpp \
+    Logger.cpp
 
 HEADERS += mainwindow.h \
         roomcontrolwidget.h \
@@ -24,4 +25,7 @@ HEADERS += mainwindow.h \
         server/connection.h \
         shareddata/shareddata.h \
         shareddata/roomdata.h \
-        shareddata/newoutputhandler.h
+        shareddata/newoutputhandler.h \
+    Logger.h
+
+
