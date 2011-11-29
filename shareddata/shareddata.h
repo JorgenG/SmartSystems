@@ -4,7 +4,6 @@
 #include <QMutex>
 #include <QObject>
 
-#include "logger/Logger.h"
 #include "roomdata.h"
 
 class SharedData : public QObject
