@@ -1,15 +1,13 @@
-#include "Logger.h"
+#include "logger.h"
 #include <time.h>
 
 Logger *logger = new Logger();
 
-Logger::Logger() {
-    loggerLock = new QMutex();
+Logger::Logger(QObject *parent) :
+        QObject(parent)
+{
+    SLoggerLock = new QMutex();
     logEntries = new QStringList();
-}
-
-Logger::~Logger() {
-
 }
 
 void Logger::addEntry(QString errorMessage) {
@@ -21,22 +19,24 @@ void Logger::addEntry(QString errorMessage) {
     ss.append(m_timeStr);
     ss.append(" ");
     ss.append(errorMessage);
-    loggerLock->lock();
+    SLoggerLock->lock();
     logEntries->push_back(ss);
-    loggerLock->unlock();
+    SLoggerLock->unlock();
+    emit logEntryAdded();
 }
 
 QString Logger::getEntry(int entryNumber) {
     QString errorStringWithTimestamp;
-    loggerLock->lock();
+    SLoggerLock->lock();
     errorStringWithTimestamp = logEntries->at(entryNumber);
-    loggerLock->unlock();
+    SLoggerLock->unlock();
     return errorStringWithTimestamp;
 }
 
 int Logger::getTotalEntries() {
-    loggerLock->lock();
+    SLoggerLock->lock();
     int size = logEntries->size();
-    loggerLock->unlock();
+    SLoggerLock->unlock();
     return size;
 }
+

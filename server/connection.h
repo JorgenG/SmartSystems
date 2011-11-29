@@ -5,14 +5,18 @@
 #include <QTcpSocket>
 #include <QDomDocument>
 
+#include "logger.h"
+
 class Connection : public QThread
 {
 public:
-    Connection(QTcpSocket &socketConnection);
+    Connection(QTcpSocket *socketConnection);
     void run();
 private:
     QTcpSocket *socketConnection;
     QDomDocument *xmlDocument;
+    void webConnection();
+    void spotConnection();
 };
 
 #endif // CONNECTION_H

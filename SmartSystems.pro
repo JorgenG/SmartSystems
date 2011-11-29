@@ -17,7 +17,7 @@ SOURCES += main.cpp\
         shareddata/shareddata.cpp \
         shareddata/roomdata.cpp \
         shareddata/newoutputhandler.cpp \
-    Logger.cpp
+    logger.cpp
 
 HEADERS += mainwindow.h \
         roomcontrolwidget.h \
@@ -26,6 +26,14 @@ HEADERS += mainwindow.h \
         shareddata/shareddata.h \
         shareddata/roomdata.h \
         shareddata/newoutputhandler.h \
-    Logger.h
+    logger.h
+
+
+
+
+
+
+
+
 
 

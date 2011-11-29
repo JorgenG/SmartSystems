@@ -4,16 +4,17 @@
 #include <QThread>
 #include <QTcpServer>
 
-#include "Logger.h"
+#include "logger.h"
+#include "connection.h"
 
 class Server : public QThread
 {
 public:
-    Server();
+    Server(int port);
     void run();
 private:
     QTcpServer *tcpServer;
-
+    int port;
 public slots:
     void newConnection();
 };

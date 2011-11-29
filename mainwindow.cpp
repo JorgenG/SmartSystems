@@ -3,7 +3,6 @@
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
 {
-
     setupWidgets();    
     addWidgetsToLayout();
     setCentralWidget(centralWidget);
@@ -26,6 +25,9 @@ void MainWindow::setupWidgets()
     tabWidget = new QTabWidget(centralWidget);
     controlAndMonitorTab = new QWidget(tabWidget);
     controlAndMonitorTabLayout = new QGridLayout(controlAndMonitorTab);
+    logTab = new QWidget(tabWidget);
+    logTabLayout = new QGridLayout(logTab);
+    logListWidget = new QListWidget();
 
     sensorDataTreeWidget = new QTreeWidget(tabWidget);
     configureTreeWidget();
@@ -99,7 +101,12 @@ void MainWindow::addWidgetsToLayout()
     controlAndMonitorTabLayout->addWidget(rightWidgetContainer, 0, 1, Qt::AlignRight);
     controlAndMonitorTab->setLayout(controlAndMonitorTabLayout);
 
+    logTabLayout->addWidget(logListWidget);
+    logTab->setLayout(logTabLayout);
+
     tabWidget->addTab(controlAndMonitorTab, "Monitor & Control");
+    tabWidget->addTab(logTab, "Log");
+
     centralLayout->addWidget(tabWidget, 0, 0);
     centralWidget->setLayout(centralLayout);
 }
@@ -115,4 +122,14 @@ void MainWindow::updateSensorData()
     (*itemIterator++)->setText(1, "Brightness 3");
     (*itemIterator++)->setText(1, "Temp 4");
     (*itemIterator++)->setText(1, "Brightness 4");
+}
+
+void MainWindow::logEntryAdded()
+{
+    int totalEntries = logger->getTotalEntries();
+    for(int i = logListWidget->count(); i < totalEntries; i++)
+    {
+        QListWidgetItem *newEntry = new QListWidgetItem(logger->getEntry(i));
+        logListWidget->addItem(newEntry);
+    }
 }

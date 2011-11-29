@@ -12,6 +12,9 @@
 #include <QGroupBox>
 #include <QPushButton>
 #include <QTreeWidgetItem>
+#include <QListWidget>
+
+#include "logger.h"
 
 class MainWindow : public QMainWindow
 {
@@ -23,15 +26,15 @@ public:
 
 private:
     RoomControlWidget* *roomControlWidgets;
-    QWidget *centralWidget, *controlAndMonitorTab, *rightWidgetContainer, *buttonWidgetContainer;
-    QGridLayout *centralLayout, *controlAndMonitorTabLayout;
+    QWidget *centralWidget, *controlAndMonitorTab, *rightWidgetContainer, *buttonWidgetContainer, *logTab;
+    QGridLayout *centralLayout, *controlAndMonitorTabLayout, *logTabLayout;
     QGroupBox *roomControlGroupBox;
     QTreeWidget *sensorDataTreeWidget;
     QTabWidget *tabWidget;
     QVBoxLayout *rightWidgetLayout;
     QHBoxLayout *buttonWidgetLayout, *roomControlGroupBoxLayout;
     QPushButton *toggleAutoModeButton, *startButton, *exitButton;
-
+    QListWidget *logListWidget;
     bool automode;
 
     void setupWidgets();
@@ -40,6 +43,7 @@ private:
 
 public slots:
     void updateSensorData();
+    void logEntryAdded();
 
 signals:
     void exitButtonClicked();
