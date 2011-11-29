@@ -14,13 +14,17 @@ int main(int argc, char *argv[])
     QObject::connect(sharedData, SIGNAL(autoModeChanged(bool)),
             newOutputHandler, SLOT(automodeChanged(bool)));
 
-    Server *server = new Server(6999);
-    Server *server2 = new Server(5000);
+    QTcpServer *tcpServer = new QTcpServer();
+    QTcpServer *tcpServer2 = new QTcpServer();
+    Server *server = new Server(0, tcpServer, 6999);
+    Server *server2 = new Server(0, tcpServer2, 5000);
 
     MainWindow w(0);
     QObject::connect(logger, SIGNAL(logEntryAdded()), &w, SLOT(logEntryAdded()) );
-    server->start();
-    server2->start();
+    QObject::connect(tcpServer, SIGNAL(newConnection()), server, SLOT(newConnection()));
+    QObject::connect(tcpServer2, SIGNAL(newConnection()), server2, SLOT(newConnection()));
+    server->listen();
+    server2->listen();
     w.show();
     QObject::connect(&w, SIGNAL(exitButtonClicked()), qApp, SLOT(quit()));
     return a.exec();

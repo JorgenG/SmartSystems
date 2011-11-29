@@ -8,6 +8,7 @@ MainWindow::MainWindow(QWidget *parent)
     setCentralWidget(centralWidget);
     automode = false;
     connect(exitButton, SIGNAL(clicked()), this, SIGNAL(exitButtonClicked()));
+    connect(startButton, SIGNAL(clicked()), this, SLOT(testNewEntry()));
     for(int i = 0; i < 4; i++)
         connect(toggleAutoModeButton, SIGNAL(clicked(bool)), roomControlWidgets[i], SLOT(automodeChanged(bool)));
     updateSensorData();
@@ -114,14 +115,14 @@ void MainWindow::addWidgetsToLayout()
 void MainWindow::updateSensorData()
 {
     QTreeWidgetItemIterator itemIterator(sensorDataTreeWidget, QTreeWidgetItemIterator::NoChildren);
-    (*itemIterator++)->setText(1, "Temp 1");
-    (*itemIterator++)->setText(1, "Brightness 1");
-    (*itemIterator++)->setText(1, "Temp 2");
-    (*itemIterator++)->setText(1, "Brightness 2");
-    (*itemIterator++)->setText(1, "Temp 3");
-    (*itemIterator++)->setText(1, "Brightness 3");
-    (*itemIterator++)->setText(1, "Temp 4");
-    (*itemIterator++)->setText(1, "Brightness 4");
+    double *temperatures = new double[4];
+    int *brightness = new int[4];
+    sharedData->getSensorData(temperatures, brightness);
+
+    for(int i = 0; i < 4; i++) {
+        (*itemIterator++)->setText(1, QString::number(temperatures[i]));
+        (*itemIterator++)->setText(1, QString::number(brightness[i]));
+    }
 }
 
 void MainWindow::logEntryAdded()
@@ -132,4 +133,9 @@ void MainWindow::logEntryAdded()
         QListWidgetItem *newEntry = new QListWidgetItem(logger->getEntry(i));
         logListWidget->addItem(newEntry);
     }
+}
+
+void MainWindow::testNewEntry()
+{
+    logger->addEntry("Testmessage");
 }

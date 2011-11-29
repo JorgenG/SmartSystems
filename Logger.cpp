@@ -15,9 +15,9 @@ void Logger::addEntry(QString errorMessage) {
     _strdate(m_dateStr);
     _strtime(m_timeStr);
     ss.append(m_dateStr);
-    ss.append(" ");
+    ss.append(" - ");
     ss.append(m_timeStr);
-    ss.append(" ");
+    ss.append(": ");
     ss.append(errorMessage);
     SLoggerLock->lock();
     logEntries->push_back(ss);

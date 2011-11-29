@@ -26,9 +26,7 @@ void RoomControlWidget::setupConnections()
 void RoomControlWidget::setupLabels()
 {
     QString roomName("Room ");
-    QString roomNumber;
-    roomNumber.setNum(m_iRoomNumber);
-    roomName.append(roomNumber);
+    roomName.append(QString::number(m_iRoomNumber));
     roomName.append(":");
     m_RoomTitleLabel = new QLabel(roomName, this);
 

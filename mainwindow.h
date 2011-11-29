@@ -15,6 +15,7 @@
 #include <QListWidget>
 
 #include "logger.h"
+#include "shareddata/shareddata.h"
 
 class MainWindow : public QMainWindow
 {
@@ -44,6 +45,7 @@ private:
 public slots:
     void updateSensorData();
     void logEntryAdded();
+    void testNewEntry();
 
 signals:
     void exitButtonClicked();

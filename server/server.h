@@ -2,16 +2,18 @@
 #define SERVER_H
 
 #include <QThread>
+#include <QObject>
 #include <QTcpServer>
 
 #include "logger.h"
 #include "connection.h"
 
-class Server : public QThread
+class Server : public QObject
 {
+    Q_OBJECT
 public:
-    Server(int port);
-    void run();
+    explicit Server(QObject *parent = 0, QTcpServer *theTcpServer = 0, int port = 0);
+    void listen();
 private:
     QTcpServer *tcpServer;
     int port;

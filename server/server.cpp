@@ -1,28 +1,34 @@
 #include "server.h"
 
-Server::Server(int aport)
+Server::Server(QObject *parent, QTcpServer *theTcpServer, int thePort) :
+    QObject(parent)
 {
-    port = aport;
-    tcpServer = new QTcpServer();
-    connect(tcpServer, SIGNAL(newConnection()), this, SLOT(newConnection()));
+    port = thePort;
+    tcpServer = theTcpServer;
 }
 
-void Server::run()
+void Server::listen()
 {
     if(!tcpServer->listen(QHostAddress::LocalHost, port)) {
         QString string("Listen on port ");
-        string.append(port);
+        string.append(QString::number(tcpServer->serverPort()));
         string.append(" failed.");
         logger->addEntry(string);
     } else {
         QString string("Listen on port ");
-        string.append(port);
+        string.append(QString::number(port));
         string.append(" successful.");
         logger->addEntry(string);
     }
+    if(tcpServer->isListening())
+        logger->addEntry("Is listening");
+    else
+        logger->addEntry("Is not listening.");
 }
 
 void Server::newConnection()
 {
-    //Connection *newConnection = new Connection(tcpServer->nextPendingConnection());
+    logger->addEntry("Connection started on port ");
+    Connection *newConnection = new Connection(tcpServer->nextPendingConnection());
+    newConnection->start();
 }
