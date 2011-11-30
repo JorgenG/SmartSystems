@@ -30,6 +30,7 @@ private:
     void setupFunctionalWidgets();
     void setupConnections();
     void addWidgetsToLayout();
+    void fixRoomConstraints();
 
 signals:
     void heaterCheckBoxChanged(int newState); // 0 = Unchecked, 2 = Checked

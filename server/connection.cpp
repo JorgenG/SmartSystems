@@ -18,9 +18,12 @@ void Connection::run()
 void Connection::webConnection()
 {
     logger->addEntry("Web connection detected!");
+    // Interpret if POST or GET - Send webpage
 }
 
 void Connection::spotConnection()
 {
     logger->addEntry("Spot connection detected!");
+
+    // Only format received is update of sensor data from Spot.
 }

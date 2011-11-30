@@ -15,6 +15,10 @@ class NewOutputHandler : public QObject
     Q_OBJECT
 public:
     explicit NewOutputHandler(QObject *parent = 0);
+private:
+    void newSunspotOutput();
+    void newNIOuput();
+
 signals:
 
 public slots:

@@ -10,6 +10,7 @@ RoomControlWidget::RoomControlWidget(QWidget *parent, int roomNumber) :
     setupFunctionalWidgets();
     addWidgetsToLayout();
     setLayout(m_VBoxLayout);
+    fixRoomConstraints();
     setupConnections();
 }
 
@@ -98,6 +99,26 @@ void RoomControlWidget::automodeChanged(bool newAutomode)
     m_BrightnessSpinBox->setEnabled(newAutomode);
     m_TempSpinBox->setEnabled(newAutomode);
     m_VLEDSlider->setEnabled(!newAutomode);
-    m_VFANSlider->setEnabled(!newAutomode);
-    m_HeaterCheckBox->setEnabled(!newAutomode);
+
+    if(m_iRoomNumber == 2 || m_iRoomNumber == 4)
+        m_VFANSlider->setEnabled(!newAutomode);
+    if(m_iRoomNumber != 1) {
+        m_HeaterCheckBox->setEnabled(!newAutomode);
+    }
+}
+
+void RoomControlWidget::fixRoomConstraints()
+{
+    switch(m_iRoomNumber) {
+    case 1:
+        m_VFANSlider->setDisabled(true);
+        m_HeaterCheckBox->setDisabled(true);
+        break;
+    case 3:
+        m_VFANSlider->setDisabled(true);
+        break;
+    default:
+        // No changes from origin
+        break;
+    }
 }
