@@ -5,6 +5,7 @@
 #-------------------------------------------------
 
 QT       += core gui network xml
+LIBS += "D:/Workspace/SmartSystems/nidaqmx/NIDAQmx.lib"
 
 TARGET = SmartSystems
 TEMPLATE = app
@@ -26,7 +27,9 @@ HEADERS += mainwindow.h \
         shareddata/shareddata.h \
         shareddata/roomdata.h \
         shareddata/newoutputhandler.h \
-    logger.h
+    logger.h \
+    nidaqmx/NIDAQmx.h
+
 
 
 
