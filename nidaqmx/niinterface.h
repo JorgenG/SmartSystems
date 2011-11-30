@@ -17,8 +17,18 @@ class NIInterface : public QObject
 public:
     explicit NIInterface(QObject *parent = 0);    
     void updateSensorData();
+    void setHeaterOutputInRoom(int room);
+    void setFanOutput();
+    void setLedOutputInRoom(int room);
+    void autoModeActivated();
 
 private:
+    void setPwmControlToRoom(int room);
+
+    /**
+     * Update PWM will set the update bit high and the low again.
+     */
+    void updatePwm();
     void initTaskHandles();
     void handleDAQmxFailed(int error);
     double convertADCValueToTemperature(double adcValue);

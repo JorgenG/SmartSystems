@@ -1,7 +1,5 @@
 #include "niinterface.h"
 
-
-
 NIInterface::NIInterface(QObject *parent) :
     QObject(parent)
 {
@@ -67,16 +65,33 @@ double NIInterface::convertADCValueToTemperature(double adcValue)
 
 void NIInterface::updateSensorData()
 {
+
     double *rawTemperatures = new double[3];
     double *rawBrightness = new double[3];
     double *temperatures = new double[3];
     int *brightness = new int[3];
+    niLock->lock();
     for(int i = 0; i < 3; i++) {
         DAQmxErrChk(DAQmxReadAnalogScalarF64(tempAI[i], 0, rawTemperatures[i], 0));
         DAQmxErrChk(DAQmxReadAnalogScalarF64(brightnessAI[i], 0, rawBrightness[i], 0));
         temperatures[i] = convertADCValueToTemperature(rawTemperatures[i]);
         // brightness[i] = convertADCValueToLinearBrightness(rawBrightness[i]);
     }
+    niLock->unlock();
     sharedData->storeNISensorData(temperatures, brightness);
     logger->addEntry("Sensor data stored!");
 }
+
+void NIInterface::autoModeActivated()
+{
+    while(sharedData->getAutomode()) {
+        // If current wanted values are close enough, exit loop, notify updater.
+        // Read all wanted values from shareddata
+        // Read sensor values and change outputs accordingly
+        // Try to increment all outputs.
+        // Update sensor data
+
+    }
+}
+
+
