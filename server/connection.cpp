@@ -8,16 +8,11 @@ Connection::Connection(QTcpSocket *newSocketConnection)
 
 void Connection::run()
 {
-    logger->addEntry("Connection started on port " + QString::number(socketConnection->localPort()));
-    if(socketConnection->localPort() == 80) {
+    if(socketConnection->localPort() == 5000) {
         webConnection();
     } else if(socketConnection->localPort() == 6999) {
         spotConnection();
     }
-    // QByteArray receiveData = socketConnection->readAll();
-
-    // xmlDocument->setContent(receiveData);
-
 }
 
 void Connection::webConnection()

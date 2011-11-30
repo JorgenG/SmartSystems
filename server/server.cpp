@@ -20,15 +20,10 @@ void Server::listen()
         string.append(" successful.");
         logger->addEntry(string);
     }
-    if(tcpServer->isListening())
-        logger->addEntry("Is listening");
-    else
-        logger->addEntry("Is not listening.");
 }
 
 void Server::newConnection()
 {
-    logger->addEntry("Connection started on port ");
     Connection *newConnection = new Connection(tcpServer->nextPendingConnection());
     newConnection->start();
 }
