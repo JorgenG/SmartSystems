@@ -45,6 +45,7 @@ private:
 public slots:
     void updateSensorData();
     void logEntryAdded();
+    void autoModeChanged(bool newValue);
     void testNewEntry();
 
 signals:

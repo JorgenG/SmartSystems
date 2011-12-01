@@ -4,23 +4,21 @@
 RoomControlWidget::RoomControlWidget(QWidget *parent, int roomNumber) :
     QWidget(parent)
 {
-    m_iRoomNumber = roomNumber;
-    m_VBoxLayout = new QVBoxLayout(this);
+    m_iRoomNumber = roomNumber;    
     setupLabels();
     setupFunctionalWidgets();
-    addWidgetsToLayout();
-    setLayout(m_VBoxLayout);
-    fixRoomConstraints();
+    setupWidgetsAndLayout();
+    setupRoomConstraints();
     setupConnections();
 }
 
 void RoomControlWidget::setupConnections()
 {
-    connect(m_VLEDSlider, SIGNAL(valueChanged(value)), this, SIGNAL(sliderLEDChanged(value)));
-    connect(m_VFANSlider, SIGNAL(valueChanged(value)), this, SIGNAL(sliderFANChanged(value)));
-    connect(m_HeaterCheckBox, SIGNAL(stateChanged(value)), this, SIGNAL(heaterCheckBoxChanged(value)));
-    connect(m_TempSpinBox, SIGNAL(valueChanged(value)), this, SIGNAL(autoTempChanged(value)));
-    connect(m_BrightnessSpinBox, SIGNAL(valueChanged(value)), this, SIGNAL(autoBrightnessChanged(value)));
+    connect(m_VLEDSlider, SIGNAL(valueChanged(int)), this, SLOT(sliderLEDChanged(int)));
+    connect(m_VFANSlider, SIGNAL(valueChanged(int)), this, SLOT(sliderFANChanged(int)));
+    connect(m_HeaterCheckBox, SIGNAL(clicked(bool)), this, SLOT(heaterCheckBoxChanged(bool)));
+    connect(m_TempSpinBox, SIGNAL(valueChanged(double)), this, SLOT(autoTempChanged(double)));
+    connect(m_BrightnessSpinBox, SIGNAL(valueChanged(int)), this, SLOT(autoBrightnessChanged(int)));
 }
 
 
@@ -49,10 +47,12 @@ void RoomControlWidget::setupFunctionalWidgets()
     m_VLEDSlider = new QSlider(Qt::Vertical, this);
     m_VLEDSlider->setRange(0, 100);
     m_VLEDSlider->setSingleStep(1);
+    m_VLEDSlider->setTracking(true);
 
     m_VFANSlider = new QSlider(Qt::Vertical, this);
     m_VFANSlider->setRange(0, 100);
     m_VFANSlider->setSingleStep(1);
+    m_VFANSlider->setTracking(true);
 
     QString heaterText("Heater");
     m_HeaterCheckBox = new QCheckBox(heaterText, this);
@@ -76,8 +76,9 @@ void RoomControlWidget::setupFunctionalWidgets()
 
 }
 
-void RoomControlWidget::addWidgetsToLayout()
+void RoomControlWidget::setupWidgetsAndLayout()
 {
+    m_VBoxLayout = new QVBoxLayout(this);
     m_VBoxLayout->addWidget(m_RoomTitleLabel, 0, Qt::AlignCenter);
 
     m_LEDFANControlsGrid->addWidget(m_LEDLabel, 0, 0, Qt::AlignRight);
@@ -92,6 +93,8 @@ void RoomControlWidget::addWidgetsToLayout()
     m_VBoxLayout->addWidget(m_TempSpinBox, 0, Qt::AlignCenter);
     m_VBoxLayout->addWidget(m_BrightnessTextLabel, 0, Qt::AlignCenter);
     m_VBoxLayout->addWidget(m_BrightnessSpinBox, 0, Qt::AlignCenter);
+
+    setLayout(m_VBoxLayout);
 }
 
 void RoomControlWidget::automodeChanged(bool newAutomode)
@@ -107,7 +110,7 @@ void RoomControlWidget::automodeChanged(bool newAutomode)
     }
 }
 
-void RoomControlWidget::fixRoomConstraints()
+void RoomControlWidget::setupRoomConstraints()
 {
     switch(m_iRoomNumber) {
     case 1:
@@ -121,4 +124,29 @@ void RoomControlWidget::fixRoomConstraints()
         // No changes from origin
         break;
     }
+}
+
+void RoomControlWidget::heaterCheckBoxChanged(bool newValue)
+{
+    sharedData->setHeaterInRoom(m_iRoomNumber, newValue);
+}
+
+void RoomControlWidget::sliderLEDChanged(int newValue)
+{
+    sharedData->setLedInRoom(m_iRoomNumber, newValue);
+}
+
+void RoomControlWidget::sliderFANChanged(int newValue)
+{
+    sharedData->setFanInRoom(m_iRoomNumber, newValue);
+}
+
+void RoomControlWidget::autoTempChanged(double newValue)
+{
+    sharedData->setWantedTempInRoom(m_iRoomNumber, newValue);
+}
+
+void RoomControlWidget::autoBrightnessChanged(int newValue)
+{
+    sharedData->setWantedBrightnessInRoom(m_iRoomNumber, newValue);
 }

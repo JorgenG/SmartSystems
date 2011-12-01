@@ -32,15 +32,15 @@ private:
     void initTaskHandles();
     void handleDAQmxFailed(int error);
     double convertADCValueToTemperature(double adcValue);
-    double const A = 0.00372307;
-    double const B = -0.000245477;
-    double const C = 0.00000162287;
+    double static const A = 0.00372307;
+    double static const B = -0.000245477;
+    double static const C = 0.00000162287;
 
     int DAQmxError;
     QMutex *niLock;
     TaskHandle* *tempAI;
     TaskHandle* *brightnessAI;
-    TaskHandle* *pwmAO;
+    TaskHandle *pwmAO;
     TaskHandle* *heaterDO;
     TaskHandle* *controlDO;
 };

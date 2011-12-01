@@ -4,11 +4,13 @@
 #include "shareddata/newoutputhandler.h"
 #include "server/server.h"
 #include "logger.h"
+#include "nidaqmx/niinterface.h"
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    NewOutputHandler *newOutputHandler = new NewOutputHandler();
+    NIInterface *niInterface = new NIInterface();
+    NewOutputHandler *newOutputHandler = new NewOutputHandler(niInterface);
     QObject::connect(sharedData, SIGNAL(dataChangedInRoom(int,int)),
             newOutputHandler, SLOT(dataChangedInRoom(int,int)));
     QObject::connect(sharedData, SIGNAL(autoModeChanged(bool)),

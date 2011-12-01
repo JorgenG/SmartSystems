@@ -2,6 +2,14 @@
 #define NEWOUTPUTHANDLER_H
 
 #include <QObject>
+#include "logger.h"
+#include "nidaqmx/niinterface.h"
+#include <QTcpSocket>
+#include <QByteArray>
+#include <QDomDocument>
+#include "shareddata.h"
+#include <QMutex>
+#include <QHostAddress>
 
 /**
  * This class handles the tasks needed to be performed
@@ -14,10 +22,15 @@ class NewOutputHandler : public QObject
 {
     Q_OBJECT
 public:
-    explicit NewOutputHandler(QObject *parent = 0);
+    explicit NewOutputHandler(NIInterface *niInterface = 0, QObject *parent = 0);
 private:
-    void newSunspotOutput();
-    void newNIOuput();
+    void newSunspotOutput(int dataType);
+    void newNIOuput(int dataType);
+    static const int sunspotRoomNumber = 4;
+
+    NIInterface *niInterface;
+    QByteArray generateXmlData(int dataType);
+    QMutex *outputLock;
 
 signals:
 

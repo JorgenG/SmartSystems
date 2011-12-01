@@ -10,6 +10,9 @@
 #include <QSlider>
 #include <QSpinBox>
 
+#include "shareddata/shareddata.h"
+#include "logger.h"
+
 class RoomControlWidget : public QWidget
 {
     Q_OBJECT
@@ -29,18 +32,16 @@ private:
     void setupLabels();
     void setupFunctionalWidgets();
     void setupConnections();
-    void addWidgetsToLayout();
-    void fixRoomConstraints();
+    void setupWidgetsAndLayout();
+    void setupRoomConstraints();
 
-signals:
-    void heaterCheckBoxChanged(int newState); // 0 = Unchecked, 2 = Checked
+public slots:
+    void automodeChanged(bool newAutomode);
+    void heaterCheckBoxChanged(bool newValue);
     void sliderLEDChanged(int newValue);
     void sliderFANChanged(int newValue);
     void autoTempChanged(double newValue);
     void autoBrightnessChanged(int newValue);
-
-public slots:
-    void automodeChanged(bool newAutomode);
 
 };
 

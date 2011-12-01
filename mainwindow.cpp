@@ -9,6 +9,7 @@ MainWindow::MainWindow(QWidget *parent)
     automode = false;
     connect(exitButton, SIGNAL(clicked()), this, SIGNAL(exitButtonClicked()));
     connect(startButton, SIGNAL(clicked()), this, SLOT(testNewEntry()));
+    connect(toggleAutoModeButton, SIGNAL(clicked(bool)), this, SLOT(autoModeChanged(bool)));
     for(int i = 0; i < 4; i++)
         connect(toggleAutoModeButton, SIGNAL(clicked(bool)), roomControlWidgets[i], SLOT(automodeChanged(bool)));
     updateSensorData();
@@ -46,7 +47,6 @@ void MainWindow::setupWidgets()
         roomControlWidgets[i] = new RoomControlWidget(roomControlGroupBox, i+1);
     }
 
-
     toggleAutoModeButton = new QPushButton("Toggle AutoMode", buttonWidgetContainer);
     toggleAutoModeButton->setCheckable(true);
     startButton = new QPushButton("Start", buttonWidgetContainer);
@@ -74,10 +74,10 @@ void MainWindow::configureTreeWidget()
 
         QTreeWidgetItem *temperature = new QTreeWidgetItem(rooms);
         temperature->setText(0, tr("Temperature"));
-        temperature->setText(1, tr("22 °C"));
+        temperature->setText(1, tr("- °C"));
         QTreeWidgetItem *brightness = new QTreeWidgetItem(rooms);
         brightness->setText(0, tr("Brightness"));
-        brightness->setText(1, tr("50 %"));
+        brightness->setText(1, tr("- %"));
     }
 
 }
@@ -132,10 +132,17 @@ void MainWindow::logEntryAdded()
     {
         QListWidgetItem *newEntry = new QListWidgetItem(logger->getEntry(i));
         logListWidget->addItem(newEntry);
+        logListWidget->setCurrentItem(newEntry);
     }
+
 }
 
 void MainWindow::testNewEntry()
 {
     logger->addEntry("Testmessage");
+}
+
+void MainWindow::autoModeChanged(bool newValue)
+{
+    sharedData->setAutomode(newValue);
 }

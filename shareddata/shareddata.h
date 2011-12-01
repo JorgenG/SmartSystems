@@ -24,7 +24,7 @@ public:
     int getLedInRoom(int roomNumber);
     int getFanInRoom(int roomNumber);
     bool getHeaterInRoom(int roomNumber);
-
+    static const int WANTEDTEMP = 0, WANTEDBRIGHTNESS = 1, LEDPWM = 2, FANPWM = 3, HEATER = 4;
     void setAutomode(bool newAutomode);
     bool getAutomode();
 private:
