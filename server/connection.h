@@ -10,12 +10,15 @@
 #include "shareddata/shareddata.h"
 #include "logger.h"
 
-class Connection
+class Connection : public QThread
 {
+    Q_OBJECT
 public:
-    Connection(QTcpSocket *socketConnection);
+    Connection(int socketDescriptor, QObject *parent = 0);
+    void run();
     void processConnection();
 private:
+    int socketDescriptor;
     QTcpSocket *socketConnection;
     QByteArray *receiveData;
     void webConnection();

@@ -12,17 +12,16 @@ int main(int argc, char *argv[])
     NIInterface *niInterface = new NIInterface();
     NewOutputHandler *newOutputHandler = new NewOutputHandler(niInterface);
     MainWindow w(0);
-    QTcpServer *tcpServer = new QTcpServer();
-    QTcpServer *tcpServer2 = new QTcpServer();
-    Server *server = new Server(0, tcpServer, 6999);
-    Server *server2 = new Server(0, tcpServer2, 5000);
+
+    Server *webServer = new Server();
+    Server *spotServer = new Server();
     QObject::connect(sharedData, SIGNAL(dataChangedInRoom(int,int)),newOutputHandler, SLOT(dataChangedInRoom(int,int)));
     QObject::connect(sharedData, SIGNAL(autoModeChanged(bool)),newOutputHandler, SLOT(automodeChanged(bool)));
     QObject::connect(logger, SIGNAL(logEntryAdded()), &w, SLOT(logEntryAdded()) );
-    QObject::connect(tcpServer, SIGNAL(newConnection()), server, SLOT(newConnection()));
-    QObject::connect(tcpServer2, SIGNAL(newConnection()), server2, SLOT(newConnection()));
-    server->listen();
-    server2->listen();
+
+    webServer->listen(QHostAddress::Any, 5000);
+    spotServer->listen(QHostAddress::Any, 6999);
+
     w.show();
     QObject::connect(&w, SIGNAL(exitButtonClicked()), qApp, SLOT(quit()));
     return a.exec();

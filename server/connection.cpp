@@ -1,8 +1,9 @@
 #include "connection.h"
 
-Connection::Connection(QTcpSocket *newSocketConnection)
+Connection::Connection(int socketDescriptor, QObject *parent)
+    : QThread(parent), socketDescriptor(socketDescriptor)
 {
-    socketConnection = newSocketConnection;
+    socketConnection = new QTcpSocket();
     receiveData = new QByteArray();
 }
 
@@ -19,41 +20,33 @@ void Connection::processConnection()
     }
     socketConnection->waitForBytesWritten();
     socketConnection->disconnectFromHost();
+    socketConnection->waitForDisconnected();
 }
 
 void Connection::webConnection()
 {
     QString data(*receiveData);
-    if(data.startsWith("GET"))
+    QFile webpage("D:/index.html");
+    webpage.open(QFile::ReadOnly);
+    QByteArray webpageData = webpage.readAll();
+
+    if(data.startsWith("GET /data "))
     {
         QFile httpOk("D:/httpok.txt");
-        QFile webpage("D:/index.html");
-        if(!webpage.exists())
-            logger->addEntry("Could not locate file");
-        else {
-            if(!(webpage.open(QFile::ReadOnly) && httpOk.open(QFile::ReadOnly)))
-                logger->addEntry("Open failed");
-            else {
-                QByteArray dataToSend = httpOk.readAll();
-                QByteArray webpageData = webpage.readAll();
-
-                if(data.startsWith("GET /data")) {
-                    QString dataValues = generateDataValues();
-                    dataToSend.append(dataValues);
-                    socketConnection->write(dataToSend);
-                }
-                else
-                    socketConnection->write(webpageData);
-            }
-        }
+        QByteArray dataToSend = httpOk.readAll();
+        QString dataValues = generateDataValues();
+        dataToSend.append(dataValues);
+        socketConnection->write(dataToSend);
+        return;
     } else if(data.startsWith("POST"))
     {
-
+        QString postMessage = data.mid(data.indexOf("room="));
+        logger->addEntry(postMessage);
+        socketConnection->write(webpageData);
     } else
     {
-
+        socketConnection->write(webpageData);
     }
-    // Interpret if POST or GET - Send webpage
 }
 
 void Connection::spotConnection()
@@ -82,7 +75,7 @@ QString Connection::generateDataValues()
             dataValues.append("|");
         }
         if(i != 1) {
-            dataValues.append(sharedData->getHeaterInRoom(i)?"true":"false");
+            dataValues.append(sharedData->getHeaterInRoom(i)?"On":"Off");
             dataValues.append("|");
         }
         dataValues.append(QString::number(sharedData->getWantedTempInRoom(i)));
@@ -91,4 +84,10 @@ QString Connection::generateDataValues()
         dataValues.append("\n");
     }
     return dataValues;
+}
+
+void Connection::run()
+{
+    socketConnection->setSocketDescriptor(socketDescriptor);
+    processConnection();
 }
