@@ -9,7 +9,7 @@ Server::Server(QObject *parent, QTcpServer *theTcpServer, int thePort) :
 
 void Server::listen()
 {
-    if(!tcpServer->listen(QHostAddress::LocalHost, port)) {
+    if(!tcpServer->listen(QHostAddress::Any, port)) {
         QString string("Listen on port ");
         string.append(QString::number(tcpServer->serverPort()));
         string.append(" failed.");
@@ -25,5 +25,5 @@ void Server::listen()
 void Server::newConnection()
 {
     Connection *newConnection = new Connection(tcpServer->nextPendingConnection());
-    newConnection->start();
+    newConnection->processConnection();
 }

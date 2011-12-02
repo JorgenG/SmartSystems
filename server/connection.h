@@ -4,19 +4,23 @@
 #include <QThread>
 #include <QTcpSocket>
 #include <QDomDocument>
-
+#include <QFile>
+#include <QDir>
+#include <QMessageBox>
+#include "shareddata/shareddata.h"
 #include "logger.h"
 
-class Connection : public QThread
+class Connection
 {
 public:
     Connection(QTcpSocket *socketConnection);
-    void run();
+    void processConnection();
 private:
     QTcpSocket *socketConnection;
-    QDomDocument *xmlDocument;
+    QByteArray *receiveData;
     void webConnection();
     void spotConnection();
+    QString generateDataValues();
 };
 
 #endif // CONNECTION_H

@@ -36,8 +36,8 @@ void NIInterface::initTaskHandles()
 
         DAQmxErrChk(DAQmxCreateTask(tempAIStr.toStdString().c_str(), tempAI[i]));
         DAQmxErrChk(DAQmxCreateTask(brightnessAIStr.toStdString().c_str(), brightnessAI[i]));
-
-        DAQmxErrChk(DAQmxCreateTask(heaterDOStr.toStdString().c_str(), heaterDO[i]));
+        if(i < 2)
+            DAQmxErrChk(DAQmxCreateTask(heaterDOStr.toStdString().c_str(), heaterDO[i]));
         DAQmxErrChk(DAQmxCreateTask(controlDOStr.toStdString().c_str(), controlDO[i]));
 
         // Create different channels blabla
@@ -85,8 +85,7 @@ void NIInterface::autoModeActivated()
     while(sharedData->getAutomode()) {
         // If current wanted values are close enough, exit loop, notify updater.
         // Read all wanted values from shareddata
-        // Read sensor values and change outputs accordingly
-        // Try to increment all outputs.
+        // Read sensor values, compare and then change outputs accordingly
         // Update sensor data
 
     }

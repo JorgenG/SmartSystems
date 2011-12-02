@@ -2,11 +2,13 @@
 
 RoomData::RoomData()
 {
-    temperature = 20.0;
+    temperature = 20.1;
     brightness = 50;
     led = 50;
     fanspeed = 0;
     heater = false;
+    wantedBrightness = 50;
+    wantedTemperature = 22.0;
     roomLock = new QMutex();
 }
 
