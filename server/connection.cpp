@@ -3,14 +3,14 @@
 Connection::Connection(int socketDescriptor, QObject *parent)
     : QThread(parent), socketDescriptor(socketDescriptor)
 {
+    path = "D:/Workspace/SmartSystems/http";
     socketConnection = new QTcpSocket();
-    receiveData = new QByteArray();
 }
 
 void Connection::processConnection()
 {
     socketConnection->waitForReadyRead();
-    *receiveData = socketConnection->readAll();
+    receiveData = new QString(socketConnection->readAll());
     if(receiveData->size() > 0) {
         if(socketConnection->localPort() == 5000) {
             webConnection();
@@ -25,32 +25,45 @@ void Connection::processConnection()
 
 void Connection::webConnection()
 {
-    QString data(*receiveData);
-    QFile webpage("D:/index.html");
-    webpage.open(QFile::ReadOnly);
-    QByteArray webpageData;
-    webpageData = webpage.readAll();
-    webpage.close();
-    webpageData.remove(0, 3);
 
-    if(data.startsWith("GET /data "))
+
+    if(receiveData->startsWith("GET /data "))
     {
-        QFile httpOk("D:/httpok.txt");
-        QByteArray dataToSend = httpOk.readAll();
+        QByteArray dataToSend = "HTTP/1.1 200 OK\r\n\r\n";
         QString dataValues = generateDataValues();
         dataToSend.append(dataValues);
         socketConnection->write(dataToSend);
         return;
-    } else if(data.startsWith("POST"))
+    } else if(receiveData->startsWith("POST"))
     {
-        QString postMessage = data.mid(data.indexOf("room="));
-        logger->addEntry(postMessage);
+        QFile webpage(path + "/index.html");
+        webpage.open(QFile::ReadOnly);
+        QByteArray webpageData;
+        webpageData = webpage.readAll();
+        webpage.close();
+
         socketConnection->write("HTTP/1.1 200 OK\r\n\r\n", 19);
         socketConnection->write(webpageData);
+        QString postMessage = receiveData->mid(receiveData->indexOf("room="));
+        logger->addEntry(postMessage);
+        // Interpret data
+    } else if(receiveData->startsWith("GET"))
+    {
+        QString filename = interpretFilename();
+        logger->addEntry(filename);
+        QFile file(path + filename);
+        if(!file.open(QFile::ReadOnly)) {
+            file.setFileName(path + "/index.html");
+            file.open(QFile::ReadOnly);
+        }
+        QByteArray fileData = file.readAll();
+        file.close();
+
+        socketConnection->write("HTTP/1.1 200 OK\r\n\r\n", 19);
+        socketConnection->write(fileData);
     } else
     {
-        socketConnection->write("HTTP/1.1 200 OK\r\n\r\n", 19);
-        socketConnection->write(webpageData);
+        logger->addEntry("Unknown request.");
     }
 }
 
@@ -95,4 +108,14 @@ void Connection::run()
 {
     socketConnection->setSocketDescriptor(socketDescriptor);
     processConnection();
+}
+
+QString Connection::interpretFilename()
+{
+    if(receiveData->startsWith("GET ")) {
+        int stopIndex = receiveData->indexOf(" ", 4);
+        return receiveData->mid(4, stopIndex - 4);
+    }
+    else
+        return "/index.html";
 }

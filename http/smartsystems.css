@@ -31,7 +31,7 @@ div {
     top: 50px;
     height: 230px;
     width: 1030px;
-    background: rgba(255, 255, 255, 0.5);
+    background: rgba(255, 255, 255, 0.65);
 }
 
 #input {
@@ -41,11 +41,11 @@ div {
     top: 310px;
     height: 250px;
     width: 1030px;
-    background: rgba(255, 255, 255, 0.5);
+    background: rgba(255, 255, 255, 0.65);
 }
 
 body {
-    background: url(http://openwalls.com/image/5086/electronic_life_2560x1600.jpg);
+    background: url(background.jpg);
 }
 
 input {
@@ -54,11 +54,13 @@ input {
 }
 
 .monitortitle {
+	position: relative;
+	left: 40px;
     font-size: 20px;
     font-weight: bold;
     font-family: "Arial Black", Arial, sans-serif;
     color: #000064;
-    text-align: center;    
+    text-align: left;    
 }
 
 .monitorid {
@@ -69,11 +71,13 @@ input {
 }
 
 .inputtitle {
+	position: relative;
+	left: 40px;
     font-size: 20px;
     font-weight: bold;
     font-family: "Arial Black", Arial, sans-serif;
     color: #000064;
-    text-align: center;    
+    text-align: left;    
 }
 
 .inputid {
@@ -81,6 +85,14 @@ input {
     font-size: 14px;
     font-family: "Arial Black", Arial, sans-serif;
     text-align: right;
+}
+
+.tables {
+	width: 250px;
+}
+
+.tablecolumns {
+	width: 125px;
 }
 
 #monitorroom1{

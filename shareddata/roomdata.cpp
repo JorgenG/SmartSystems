@@ -4,7 +4,7 @@ RoomData::RoomData()
 {
     temperature = 20.1;
     brightness = 50;
-    led = 50;
+    led = 0;
     fanspeed = 0;
     heater = false;
     wantedBrightness = 50;

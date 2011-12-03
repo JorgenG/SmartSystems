@@ -20,10 +20,12 @@ public:
 private:
     int socketDescriptor;
     QTcpSocket *socketConnection;
-    QByteArray *receiveData;
+    QString *receiveData;
     void webConnection();
     void spotConnection();
     QString generateDataValues();
+    QString interpretFilename();
+    QString path;
 };
 
 #endif // CONNECTION_H
