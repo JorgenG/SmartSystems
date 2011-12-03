@@ -28,7 +28,10 @@ void Connection::webConnection()
     QString data(*receiveData);
     QFile webpage("D:/index.html");
     webpage.open(QFile::ReadOnly);
-    QByteArray webpageData = webpage.readAll();
+    QByteArray webpageData;
+    webpageData = webpage.readAll();
+    webpage.close();
+    webpageData.remove(0, 3);
 
     if(data.startsWith("GET /data "))
     {
@@ -42,9 +45,11 @@ void Connection::webConnection()
     {
         QString postMessage = data.mid(data.indexOf("room="));
         logger->addEntry(postMessage);
+        socketConnection->write("HTTP/1.1 200 OK\r\n\r\n", 19);
         socketConnection->write(webpageData);
     } else
     {
+        socketConnection->write("HTTP/1.1 200 OK\r\n\r\n", 19);
         socketConnection->write(webpageData);
     }
 }

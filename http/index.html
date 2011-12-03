@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="smartsystems.css">
+	<meta charset="utf-8">
+	<title>Smart Systems - Monitoring</title>
+</head>
+<body>
+<div id='monitor'>
+    <div id='monitorroom1'>
+        <table>
+            <tr>
+                <td colspan='2'>
+                    <p class='monitortitle'>Room 1:</p>
+                </td>    
+            </tr>
+            <tr>
+                <td>
+                    <p class='monitorid'>Temperature:</p>
+                </td>
+                <td>
+                    <span class='monitorvalue' id="room1temp">null</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <p class='monitorid'>Brightness:</p>
+                </td>
+                <td>
+                    <span class='monitorvalue' id="room1brightness">null</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <p class='monitorid'>LED %:</p>
+                </td>
+                <td>
+                    <span class='monitorvalue' id="room1led">null</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <p class='monitorid'>Wanted temp:</p>
+                </td>
+                <td>
+                    <span class='monitorvalue' id="room1wtemp">null</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <p class='monitorid'>Wanted light:</p>
+                </td>
+                <td>
+                    <span class='monitorvalue' id="room1wbrightness">null</span>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div id='monitorroom2'>
+        <table>
+            <tr>
+                <td colspan='2'>
+                    <p class='monitortitle'>Room 2:</p>
+                </td>    
+            </tr>
+            <tr>
+                <td>
+                    <p class='monitorid'>Temperature:</p>
+                </td>
+                <td>
+                    <span class='monitorvalue' id="room2temp">null</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <p class='monitorid'>Brightness:</p>
+                </td>
+                <td>
+                    <span class='monitorvalue' id="room2brightness">null</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <p class='monitorid'>LED %:</p>
+                </td>
+                <td>
+                    <span class='monitorvalue' id="room2led">null</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <p class='monitorid'>Fan %:</p>
+                </td>
+                <td>
+                    <span class='monitorvalue' id="room2fan">null</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <p class='monitorid'>Heater:</p>
+                </td>
+                <td>
+                    <span class='monitorvalue' id="room2heater">null</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <p class='monitorid'>Wanted temp:</p>
+                </td>
+                <td>
+                    <span class='monitorvalue' id="room2wtemp">null</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <p class='monitorid'>Wanted light:</p>
+                </td>
+                <td>
+                    <span class='monitorvalue' id="room2wbrightness">null</span>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div id='monitorroom3'>
+        <table>
+            <tr>
+                <td colspan='2'>
+                    <p class='monitortitle'>Room 3:</p>
+                </td>    
+            </tr>
+            <tr>
+                <td>
+                    <p class='monitorid'>Temperature:</p>
+                </td>
+                <td>
+                    <span class='monitorvalue' id="room3temp">null</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <p class='monitorid'>Brightness:</p>
+                </td>
+                <td>
+                    <span class='monitorvalue' id="room3brightness">null</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <p class='monitorid'>LED %:</p>
+                </td>
+                <td>
+                    <span class='monitorvalue' id="room3led">null</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <p class='monitorid'>Heater:</p>
+                </td>
+                <td>
+                    <span class='monitorvalue' id="room3heater">null</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <p class='monitorid'>Wanted temp:</p>
+                </td>
+                <td>
+                    <span class='monitorvalue' id="room3wtemp">null</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <p class='monitorid'>Wanted light:</p>
+                </td>
+                <td>
+                    <span class='monitorvalue' id="room3wbrightness">null</span>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div id='monitorroom4'>
+        <table>
+            <tr>
+                <td colspan='2'>
+                    <p class='monitortitle'>Room 4:</p>
+                </td>    
+            </tr>
+            <tr>
+                <td>
+                    <p class='monitorid'>Temperature:</p>
+                </td>
+                <td>
+                    <span class='monitorvalue' id="room4temp">null</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <p class='monitorid'>Brightness:</p>
+                </td>
+                <td>
+                    <span class='monitorvalue' id="room4brightness">null</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <p class='monitorid'>LED %:</p>
+                </td>
+                <td>
+                    <span class='monitorvalue' id="room4led">null</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <p class='monitorid'>Fan %:</p>
+                </td>
+                <td>
+                    <span class='monitorvalue' id="room4fan">null</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <p class='monitorid'>Heater:</p>
+                </td>
+                <td>
+                    <span class='monitorvalue' id="room4heater">null</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <p class='monitorid'>Wanted temp:</p>
+                </td>
+                <td>
+                    <span class='monitorvalue' id="room4wtemp">null</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <p class='monitorid'>Wanted light:</p>
+                </td>
+                <td>
+                    <span class='monitorvalue' id="room4wbrightness">null</span>
+                </td>
+            </tr>
+        </table>
+    </div>
+    </div>
+    <div id='input'>
+    <div class='room1' id='inputroom1'>
+        <form name='room1' method='post' action='http://localhost:5000/'>
+            <table>
+                <tr>
+                    <td colspan='2'>
+                        <p class='inputtitle'>Room 1:</p><input type='hidden' name='room' value='1'>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p class='inputid'>LED %:</p>
+                    </td>
+                    <td>
+                        <INPUT type="text" size="10" maxlength="5" name="led">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p class='inputid'>Wanted temp:</p>
+                    </td>
+                    <td>
+                        <INPUT type="text" size="10" maxlength="5" name="wtemp">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p class='inputid'>Wanted light:</p>
+                    </td>
+                    <td>
+                        <INPUT type="text" size="10" maxlength="5" name="wlight">
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                        <input class='submit' type='submit'/>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+    <div id='inputroom2'>
+        <form name='room2' method='post' action='http://localhost:5000/'>
+            <table>
+                <tr>
+                    <td colspan='2'>
+                        <p class='inputtitle'>Room 2:</p><input type='hidden' name='room' value='2'>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p class='inputid'>LED %:</p>
+                    </td>
+                    <td>
+                        <INPUT type="text" size="10" maxlength="5" name="led">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p class='inputid'>Fan %:</p>
+                    </td>
+                    <td>
+                        <INPUT type="text" size="10" maxlength="5" name="fan">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p class='inputid'>Heatsink:</p>
+                    </td>
+                    <td>
+                        <INPUT type="checkbox" size="10" maxlength="5" name="heater">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p class='inputid'>Wanted temp:</p>
+                    </td>
+                    <td>
+                        <INPUT type="text" size="10" maxlength="5" name="wtemp">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p class='inputid'>Wanted light:</p>
+                    </td>
+                    <td>
+                        <INPUT type="text" size="10" maxlength="5" name="wlight">
+                    </td>
+                </tr>
+                <tr>
+                <td></td>
+                    <td>
+                        <input class='submit' type='submit'/>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+    <div id='inputroom3'>
+        <form name='room3' method='post' action='http://localhost:5000/'>
+            <table>
+                <tr>
+                    <td colspan='2'>
+                        <p class='inputtitle'>Room 3:</p><input type='hidden' name='room' value='3'>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p class='inputid'>LED %:</p>
+                    </td>
+                    <td>
+                        <INPUT type="text" size="10" maxlength="5" name="led">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p class='inputid'>Heatsink:</p>
+                    </td>
+                    <td>
+                        <INPUT type="checkbox" size="10" maxlength="5" name="heater">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p class='inputid'>Wanted temp:</p>
+                    </td>
+                    <td>
+                        <INPUT type="text" size="10" maxlength="5" name="wtemp">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p class='inputid'>Wanted light:</p>
+                    </td>
+                    <td>
+                        <INPUT type="text" size="10" maxlength="5" name="wlight">
+                    </td>
+                </tr>
+                <tr>
+                <td></td>                
+                    <td>
+                        <input class='submit' type='submit'/>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+    <div id='inputroom4'>
+        <form name='room4' method='post' action='http://localhost:5000/'>
+            <table>
+                <tr>
+                    <td colspan='2'>
+                        <p class='inputtitle'>Room 4:</p><input type='hidden' name='room' value='4'>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p class='inputid'>LED %:</p>
+                    </td>
+                    <td>
+                        <INPUT type="text" size="10" maxlength="5" name="led">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p class='inputid'>Fan %:</p>
+                    </td>
+                    <td>
+                        <INPUT type="text" size="10" maxlength="5" name="fan">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p class='inputid'>Heatsink:</p>
+                    </td>
+                    <td>
+                        <INPUT type="checkbox" size="10" maxlength="5" name="heater">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p class='inputid'>Wanted temp:</p>
+                    </td>
+                    <td>
+                        <INPUT type="text" size="10" maxlength="5" name="wtemp">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p class='inputid'>Wanted light:</p>
+                    </td>
+                    <td>
+                        <INPUT type="text" size="10" maxlength="5" name="wlight">
+                    </td>
+                </tr>
+                <tr>
+                <td></td>
+                    <td>
+                        <input class='submit' type='submit'/>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+    </div>
+	<script>
+		function update()
+		{
+			var xmlhttp;
+			if (window.XMLHttpRequest)
+			{
+				// alle nettlesere bortsett fra IE6
+				xmlhttp = new XMLHttpRequest();
+			}
+			else
+			{
+				// ...som selvsagt trenger s?ehandling
+				xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+			}
+			xmlhttp.onreadystatechange = function()
+			{
+				if (xmlhttp.readyState == 4 && xmlhttp.status == 200)
+				{
+					var data = xmlhttp.responseText.split('\n');
+					var room1 = data[0].split('|');
+					var room2 = data[1].split('|');
+					var room3 = data[2].split('|');
+					var room4 = data[3].split('|');
+					document.getElementById('room1temp').innerHTML = room1[0];
+					document.getElementById('room1brightness').innerHTML = room1[1];
+					document.getElementById('room1led').innerHTML = room1[2];
+					document.getElementById('room1wtemp').innerHTML = room1[3];
+					document.getElementById('room1wbrightness').innerHTML = room1[4];
+					
+					document.getElementById('room2temp').innerHTML = room2[0];
+					document.getElementById('room2brightness').innerHTML = room2[1];
+					document.getElementById('room2led').innerHTML = room2[2];
+					document.getElementById('room2fan').innerHTML = room2[3];
+					document.getElementById('room2heater').innerHTML = room2[4];
+					document.getElementById('room2wtemp').innerHTML = room2[5];
+					document.getElementById('room2wbrightness').innerHTML = room2[6];
+					
+					document.getElementById('room3temp').innerHTML = room3[0];
+					document.getElementById('room3brightness').innerHTML = room3[1];
+					document.getElementById('room3led').innerHTML = room3[2];
+					document.getElementById('room3heater').innerHTML = room3[3];
+					document.getElementById('room3wtemp').innerHTML = room3[4];
+					document.getElementById('room3wbrightness').innerHTML = room3[5];
+					
+					document.getElementById('room4temp').innerHTML = room4[0];
+					document.getElementById('room4brightness').innerHTML = room4[1];
+					document.getElementById('room4led').innerHTML = room4[2];
+					document.getElementById('room4fan').innerHTML = room4[3];
+					document.getElementById('room4heater').innerHTML = room4[4];
+					document.getElementById('room4wtemp').innerHTML = room4[5];
+					document.getElementById('room4wbrightness').innerHTML = room4[6];
+				}
+			}
+			xmlhttp.open("GET", "data", true);
+			xmlhttp.send();
+
+			setTimeout('update()', 300);
+		}
+		update();
+	</script>
+</body>
+</html>

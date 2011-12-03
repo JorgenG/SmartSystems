@@ -1,0 +1,141 @@
+html, body, h1, h2, h3, h4, h5, h6, p, ol, ul, li, pre, code, address,
+variable, form, fieldset, blockquote {
+    padding: 0;
+    margin: 0;
+    font-size: 100%;
+    font-weight: normal;
+}
+
+ol {
+    margin-left: 1.4em;
+    list-style: decimal;
+}
+
+ul {
+    margin-left: 1.4em;
+    list-style:square;
+}
+
+img {
+    border: 0;
+}
+
+div {  
+
+}
+
+#monitor {
+    position: fixed;
+    border-style: double;
+    left: 5%;
+    top: 50px;
+    height: 230px;
+    width: 1030px;
+    background: rgba(255, 255, 255, 0.5);
+}
+
+#input {
+    position: fixed;
+    border-style: double;
+    left: 5%;
+    top: 310px;
+    height: 250px;
+    width: 1030px;
+    background: rgba(255, 255, 255, 0.5);
+}
+
+body {
+    background: url(http://openwalls.com/image/5086/electronic_life_2560x1600.jpg);
+}
+
+input {
+    opacity: 0.7;
+    
+}
+
+.monitortitle {
+    font-size: 20px;
+    font-weight: bold;
+    font-family: "Arial Black", Arial, sans-serif;
+    color: #000064;
+    text-align: center;    
+}
+
+.monitorid {
+    font-weight: bold;
+    font-size: 14px;
+    font-family: "Arial Black", Arial, sans-serif;
+    text-align: right;
+}
+
+.inputtitle {
+    font-size: 20px;
+    font-weight: bold;
+    font-family: "Arial Black", Arial, sans-serif;
+    color: #000064;
+    text-align: center;    
+}
+
+.inputid {
+    font-weight: bold;
+    font-size: 14px;
+    font-family: "Arial Black", Arial, sans-serif;
+    text-align: right;
+}
+
+#monitorroom1{
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    width: 250px;
+} 
+
+#monitorroom2{
+    position: absolute;
+    top: 15px;
+    left: 265px;
+    width: 250px;
+}
+
+#monitorroom3{
+    position: absolute;
+    top: 15px;
+    left: 515px;
+    width: 250px;
+}
+
+#monitorroom4{
+    position: absolute;
+    top: 15px;
+    left: 765px;
+    width: 250px;
+}
+
+#inputroom1{
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    width: 250px;
+} 
+
+#inputroom2{
+    position: absolute;
+    top: 15px;
+    left: 265px;
+    width: 250px;
+}
+
+#inputroom3{
+    position: absolute;
+    top: 15px;
+    left: 515px;
+    width: 250px;
+}
+
+#inputroom4{
+    position: absolute;
+    top: 15px;
+    left: 765px;
+    width: 250px;
+}
+
