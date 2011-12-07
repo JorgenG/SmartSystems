@@ -31,7 +31,7 @@ div {
     top: 50px;
     height: 230px;
     width: 1030px;
-    background: rgba(255, 255, 255, 0.65);
+    background: rgba(255, 255, 255, 0.8);
 }
 
 #input {
@@ -41,7 +41,7 @@ div {
     top: 310px;
     height: 250px;
     width: 1030px;
-    background: rgba(255, 255, 255, 0.65);
+    background: rgba(255, 255, 255, 0.8);
 }
 
 body {
@@ -59,7 +59,7 @@ input {
     font-size: 20px;
     font-weight: bold;
     font-family: "Arial Black", Arial, sans-serif;
-    color: #000064;
+    color: #006400;
     text-align: left;    
 }
 
@@ -76,7 +76,7 @@ input {
     font-size: 20px;
     font-weight: bold;
     font-family: "Arial Black", Arial, sans-serif;
-    color: #000064;
+    color: #006400;
     text-align: left;    
 }
 
@@ -88,11 +88,11 @@ input {
 }
 
 .tables {
-	width: 250px;
+	width: 230px;
 }
 
 .tablecolumns {
-	width: 125px;
+	width: 115px;
 }
 
 #monitorroom1{

@@ -12,11 +12,16 @@ void NIInterface::initTaskHandles()
 {
     tempAI = new TaskHandle*[3];
     brightnessAI = new TaskHandle*[3];
-    pwmAO = new TaskHandle();
     heaterDO = new TaskHandle*[2];
+
+
+    // [0 - 1] = value for which PWM to control, 00 = LEDR1, 01 = LEDR2, 10 = LEDR3, 11 = FANR2
+    // [2]     = pin to be set high when pwm should be updated.
     controlDO = new TaskHandle*[3];
+
     pwmAO = new TaskHandle();
     DAQmxErrChk(DAQmxCreateTask("PwmAO", pwmAO));
+    DAQmxErrChk(DAQmxCreateAOVoltageChan(pwmAO, "Dev1/ao0", "PwmAO", 0, 5, DAQmx_Val_Volts, 0));
 
     for(int i = 0; i < 3; i++) {
         QString tempAIStr("TempAI");
@@ -40,7 +45,6 @@ void NIInterface::initTaskHandles()
             DAQmxErrChk(DAQmxCreateTask(heaterDOStr.toStdString().c_str(), heaterDO[i]));
         DAQmxErrChk(DAQmxCreateTask(controlDOStr.toStdString().c_str(), controlDO[i]));
 
-        // Create different channels blabla
     }
 
 
@@ -104,6 +108,36 @@ void NIInterface::setHeaterOutputInRoom(int room)
         // Invalid room, do nothing?!
         break;
     }
+}
+
+void NIInterface::updatePwm()
+{
+    uInt8 *oneArray = new uInt8[1];
+    oneArray[0] = 1;
+    DAQmxErrChk(DAQmxWriteDigitalLines(controlDO[2], 1, 1, 0, DAQmx_Val_GroupByChannel, oneArray, 0, 0));
+
+    uInt8 *zeroArray = new uInt8[1];
+    zeroArray[0] = 0;
+    DAQmxErrChk(DAQmxWriteDigitalLines(controlDO[2], 1, 1, 0, DAQmx_Val_GroupByChannel, zeroArray, 0, 0));
+}
+
+void NIInterface::createAIChannels()
+{
+    DAQmxErrChk(DAQmxCreateAIVoltageChan(tempAI[0], "Dev1/ai0", "TempAI0", DAQmx_Val_Diff, 3, 5, DAQmx_Val_Volts, 0));
+    DAQmxErrChk(DAQmxCreateAIVoltageChan(tempAI[1], "Dev1/ai1", "TempAI1", DAQmx_Val_Diff, 3, 5, DAQmx_Val_Volts, 0));
+    DAQmxErrChk(DAQmxCreateAIVoltageChan(tempAI[2], "Dev1/ai2", "TempAI2", DAQmx_Val_Diff, 3, 5, DAQmx_Val_Volts, 0));
+    DAQmxErrChk(DAQmxCreateAICurrentChan(brightnessAI[0], "Dev1/ai3", "BrightnessAI0", DAQmx_Val_Diff, 0.000001, 0.01, DAQmx_Val_Amps, DAQmx_Val_Internal, 0, 0));
+    DAQmxErrChk(DAQmxCreateAICurrentChan(brightnessAI[1], "Dev1/ai4", "BrightnessAI1", DAQmx_Val_Diff, 0.000001, 0.01, DAQmx_Val_Amps, DAQmx_Val_Internal, 0, 0));
+    DAQmxErrChk(DAQmxCreateAICurrentChan(brightnessAI[2], "Dev1/ai5", "BrightnessAI2", DAQmx_Val_Diff, 0.000001, 0.01, DAQmx_Val_Amps, DAQmx_Val_Internal, 0, 0));
+}
+
+void NIInterface::createDOChannels()
+{
+    DAQmxErrChk(DAQmxCreateDOChan(heaterDO[0], "Dev1/port0/line0", "HeaterDO0", DAQmx_Val_ChanPerLine));
+    DAQmxErrChk(DAQmxCreateDOChan(heaterDO[1], "Dev1/port0/line1", "HeaterDO1", DAQmx_Val_ChanPerLine));
+    DAQmxErrChk(DAQmxCreateDOChan(controlDO[0], "Dev1/port0/line2", "ControlDO0", DAQmx_Val_ChanPerLine));
+    DAQmxErrChk(DAQmxCreateDOChan(controlDO[1], "Dev1/port0/line3", "ControlDO1", DAQmx_Val_ChanPerLine));
+    DAQmxErrChk(DAQmxCreateDOChan(controlDO[2], "Dev1/port0/line4", "ControlDO2", DAQmx_Val_ChanPerLine));
 }
 
 

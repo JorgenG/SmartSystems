@@ -31,6 +31,10 @@ private:
     void updatePwm();
     void initTaskHandles();
     void handleDAQmxFailed(int error);
+
+    void createAIChannels();
+    void createDOChannels();
+
     double convertADCValueToTemperature(double adcValue);
     double static const A = 0.00372307;
     double static const B = -0.000245477;
