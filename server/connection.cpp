@@ -21,6 +21,7 @@ void Connection::processConnection()
     socketConnection->waitForBytesWritten();
     socketConnection->disconnectFromHost();
     socketConnection->waitForDisconnected();
+    delete socketConnection;
 }
 
 void Connection::webConnection()
@@ -101,7 +102,7 @@ void Connection::spotConnection()
         logger->addEntry("Invalid xml document. Number of childs: " + QString::number(xmlDocument->childNodes().length()));
     }
 
-
+    delete xmlDocument;
 }
 
 QString Connection::generateDataValues()

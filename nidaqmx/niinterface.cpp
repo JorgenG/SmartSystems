@@ -85,12 +85,13 @@ void NIInterface::updateSensorData()
     }
     niLock->unlock();
     sharedData->storeNISensorData(temperatures, brightness);
+    delete rawTemperatures, rawBrightness, temperatures, brightness;
     logger->addEntry("Sensor data stored!");
 }
 
 void NIInterface::autoModeActivated()
 {
-    if(false) {
+    if(sharedData->getAutomode()) {
         double *temperatures = new double[4];
         int *brightness = new int[4];
         bool brightnessOk = true;
@@ -111,6 +112,8 @@ void NIInterface::autoModeActivated()
             if(brightnessOk)
                 break;
         }
+
+        delete temperatures, brightness;
     }
 }
 
