@@ -25,7 +25,7 @@ public:
     explicit NewOutputHandler(NIInterface *niInterface = 0, QObject *parent = 0);
 private:
     void newSunspotOutput(int dataType);
-    void newNIOuput(int dataType);
+    void newNIOutput(int room, int dataType);
     static const int sunspotRoomNumber = 4;
 
     NIInterface *niInterface;

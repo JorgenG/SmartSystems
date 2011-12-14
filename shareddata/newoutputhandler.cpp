@@ -9,28 +9,20 @@ NewOutputHandler::NewOutputHandler(NIInterface *niInterface, QObject *parent) :
 
 void NewOutputHandler::dataChangedInRoom(int roomNumber, int dataType)
 {
-    QString debugMessage("Detected data change in room: ");
-    debugMessage.append(QString::number(roomNumber));
-    debugMessage.append(" with datatype: ");
-    debugMessage.append(QString::number(dataType));
-    logger->addEntry(debugMessage);
-
     outputLock->lock();
     if(roomNumber == 4) {
         newSunspotOutput(dataType);
     } else {
-        newNIOuput(dataType);
+        newNIOutput(roomNumber, dataType);
     }
     outputLock->unlock();
 }
 
 void NewOutputHandler::automodeChanged(bool newAutomode)
 {
-    if(newAutomode)
-        logger->addEntry("Detected automode change to true");
-    else
-        logger->addEntry("Detected automode change to false");
-
+    if(newAutomode) {
+        niInterface->autoModeActivated();
+    }
     newSunspotOutput(5);
 }
 
@@ -43,9 +35,29 @@ void NewOutputHandler::newSunspotOutput(int dataType)
     socketConnection->close();
 }
 
-void NewOutputHandler::newNIOuput(int dataType)
+/**
+ * dataTypes:
+ *  - wantedTemp        = 0;
+ *  - wantedBrightness  = 1;
+ *  - led               = 2;
+ *  - fan               = 3;
+ *  - heater            = 4;
+ */
+void NewOutputHandler::newNIOutput(int room, int dataType)
 {
-
+    switch(dataType) {
+    case 2:
+        niInterface->setLedOutputInRoom(room);
+        break;
+    case 3:
+        niInterface->setFanOutput();
+        break;
+    case 4:
+        niInterface->setHeaterOutputInRoom(room);
+        break;
+    default:
+        break;
+    }
 }
 
 QByteArray NewOutputHandler::generateXmlData(int dataType)
@@ -72,7 +84,7 @@ QByteArray NewOutputHandler::generateXmlData(int dataType)
     case 4: // Heater bool
         *value = xmlDocument->createTextNode(QString(sharedData->getHeaterInRoom(sunspotRoomNumber)?"true":"false"));
         break;
-    case 5: // Automode changed
+    case 5: // Automode
         *value = xmlDocument->createTextNode(QString(sharedData->getAutomode()?"true":"false"));
         break;
     default:

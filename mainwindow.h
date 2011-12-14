@@ -45,6 +45,7 @@ private:
 public slots:
     void updateSensorData();
     void logEntryAdded();
+    void dataChangedInRoomFromWeb(int room, int type);
     void autoModeChanged(bool newValue);
     void testNewEntry();
 

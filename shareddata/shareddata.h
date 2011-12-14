@@ -27,10 +27,13 @@ public:
     static const int WANTEDTEMP = 0, WANTEDBRIGHTNESS = 1, LEDPWM = 2, FANPWM = 3, HEATER = 4;
     void setAutomode(bool newAutomode);
     bool getAutomode();
+    void setDataFromWeb(bool data);
+    bool getDataFromWeb();
 private:
     RoomData* *roomData;
     bool automode;
-    QMutex *autoModeLock;
+    bool dataFromWeb;
+    QMutex *autoModeLock, *dataFromWebLock;
 
 signals:
     /**
@@ -41,7 +44,9 @@ signals:
      *  - fan               = 3;
      *  - heater            = 4;
      */
+    void sensorDataChanged();
     void dataChangedInRoom(int roomNumber, int dataType);
+    void dataChangedInRoomFromWeb(int roomNumber, int dataType);
     void autoModeChanged(bool newAutomode);
 };
 

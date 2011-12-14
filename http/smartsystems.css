@@ -24,11 +24,21 @@ div {
 
 }
 
+#automode {
+	position: fixed;
+	border-style: double;
+	left: 20px;
+	top: 20px;
+	height: 40px;
+	width: 1030px;
+	background: rgba(255, 255, 255, 0.8);
+}
+
 #monitor {
     position: fixed;
     border-style: double;
-    left: 5%;
-    top: 50px;
+    left: 20px;
+    top: 80px;
     height: 230px;
     width: 1030px;
     background: rgba(255, 255, 255, 0.8);
@@ -37,12 +47,14 @@ div {
 #input {
     position: fixed;
     border-style: double;
-    left: 5%;
-    top: 310px;
+    left: 20px;
+    top: 330px;
     height: 250px;
     width: 1030px;
     background: rgba(255, 255, 255, 0.8);
 }
+
+
 
 body {
     background: url(background.jpg);
@@ -61,6 +73,16 @@ input {
     font-family: "Arial Black", Arial, sans-serif;
     color: #006400;
     text-align: left;    
+}
+
+.automodetitle {
+	position: relative;
+	left: 40px;
+    font-size: 20px;
+    font-weight: bold;
+    font-family: "Arial Black", Arial, sans-serif;
+    color: #006400;
+    text-align: left;   
 }
 
 .monitorid {
@@ -88,12 +110,22 @@ input {
 }
 
 .tables {
-	width: 230px;
+	width: 250px;
 }
 
 .tablecolumns {
-	width: 115px;
+	width: 125px;
 }
+
+.widetables {
+	width: 350px;
+}
+
+.widetablecolumns {
+	width: 180px;
+}
+
+
 
 #monitorroom1{
     position: absolute;
@@ -148,6 +180,21 @@ input {
     position: absolute;
     top: 15px;
     left: 765px;
+    width: 250px;
+}
+
+#monitorautomode{
+    position: absolute;
+    top: 7px;
+    left: 5px;
+    width: 250px;
+	height: 60px;
+} 
+
+#inputautomode{
+	position: absolute;
+    top: 7px;
+    left: 265px;
     width: 250px;
 }
 

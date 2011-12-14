@@ -146,3 +146,16 @@ void MainWindow::autoModeChanged(bool newValue)
 {
     sharedData->setAutomode(newValue);
 }
+
+void MainWindow::dataChangedInRoomFromWeb(int room, int type)
+{
+    // Automode changed from web
+    if(room == 0) {
+        toggleAutoModeButton->setChecked(sharedData->getAutomode());
+        for(int i = 0; i < 4; i++)
+            roomControlWidgets[i]->automodeChanged(sharedData->getAutomode());
+    }
+    else {
+        roomControlWidgets[room - 1]->dataChanged(type);
+    }
+}

@@ -18,6 +18,7 @@ class RoomControlWidget : public QWidget
     Q_OBJECT
 public:
     explicit RoomControlWidget(QWidget *parent = 0, int roomNumber = 0);
+    void dataChanged(int type);
 private:
     int m_iRoomNumber;
     QLabel *m_RoomTitleLabel, *m_TempTextLabel, *m_BrightnessTextLabel, *m_LEDLabel, *m_FANLabel;

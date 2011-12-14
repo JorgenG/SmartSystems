@@ -23,6 +23,7 @@ private:
     QString *receiveData;
     void webConnection();
     void spotConnection();
+    void handlePostMessage(QString data);
     QString generateDataValues();
     QString interpretFilename();
     QString path;

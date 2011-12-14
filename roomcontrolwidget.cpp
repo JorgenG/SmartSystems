@@ -62,13 +62,11 @@ void RoomControlWidget::setupFunctionalWidgets()
     m_TempSpinBox->setRange(5.0, 40.0);
     m_TempSpinBox->setSingleStep(0.5);
     m_TempSpinBox->setValue(22.0);
-    m_TempSpinBox->setEnabled(false);
 
     m_BrightnessSpinBox = new QSpinBox(this);
     m_BrightnessSpinBox->setRange(0, 100);
     m_BrightnessSpinBox->setSingleStep(5);
     m_BrightnessSpinBox->setValue(50);
-    m_BrightnessSpinBox->setEnabled(false);
 
     m_LEDFANControlsGrid = new QGridLayout(this);
 
@@ -99,8 +97,6 @@ void RoomControlWidget::setupWidgetsAndLayout()
 
 void RoomControlWidget::automodeChanged(bool newAutomode)
 {
-    m_BrightnessSpinBox->setEnabled(newAutomode);
-    m_TempSpinBox->setEnabled(newAutomode);
     m_VLEDSlider->setEnabled(!newAutomode);
 
     if(m_iRoomNumber == 2 || m_iRoomNumber == 4)
@@ -149,4 +145,35 @@ void RoomControlWidget::autoTempChanged(double newValue)
 void RoomControlWidget::autoBrightnessChanged(int newValue)
 {
     sharedData->setWantedBrightnessInRoom(m_iRoomNumber, newValue);
+}
+
+void RoomControlWidget::dataChanged(int type)
+{
+    switch(type) {
+    case 0:
+        m_TempSpinBox->blockSignals(true);
+        m_TempSpinBox->setValue(sharedData->getWantedTempInRoom(m_iRoomNumber));
+        m_TempSpinBox->blockSignals(false);
+        break;
+    case 1:
+        m_BrightnessSpinBox->blockSignals(true);
+        m_BrightnessSpinBox->setValue(sharedData->getWantedBrightnessInRoom(m_iRoomNumber));
+        m_BrightnessSpinBox->blockSignals(false);
+        break;
+    case 2:
+        m_VLEDSlider->blockSignals(true);
+        m_VLEDSlider->setValue(sharedData->getLedInRoom(m_iRoomNumber));
+        m_VLEDSlider->blockSignals(false);
+        break;
+    case 3:
+        m_VFANSlider->blockSignals(true);
+        m_VFANSlider->setValue(sharedData->getFanInRoom(m_iRoomNumber));
+        m_VFANSlider->blockSignals(false);
+        break;
+    case 4:
+        m_HeaterCheckBox->blockSignals(true);
+        m_HeaterCheckBox->setChecked(sharedData->getHeaterInRoom(m_iRoomNumber));
+        m_HeaterCheckBox->blockSignals(false);
+        break;
+    }
 }
