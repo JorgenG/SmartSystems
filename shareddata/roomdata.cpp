@@ -2,8 +2,14 @@
 
 RoomData::RoomData()
 {
-    temperature = 20.1;
-    brightness = 50;
+    tempCounter = 0;
+    brightnessCounter = 0;
+    temperature = new double[10];
+    brightness = new int[10];
+    for(int i = 0; i < 10; i++) {
+        temperature[i] = 0;
+        brightness[i] = 0;
+    }
     led = 0;
     fanspeed = 0;
     heater = false;
@@ -15,7 +21,11 @@ RoomData::RoomData()
 double RoomData::getTemperature()
 {
     roomLock->lock();
-    double value = temperature;
+    double sum = 0;
+    for(int i = 0; i < 10; i++) {
+        sum += temperature[i];
+    }
+    double value = sum/10;
     roomLock->unlock();
     return value;
 }
@@ -23,14 +33,20 @@ double RoomData::getTemperature()
 void RoomData::setTemperature(double newTemperature)
 {
     roomLock->lock();
-    temperature = newTemperature;
+    temperature[tempCounter++] = newTemperature;
+    if(tempCounter == 10)
+        tempCounter = 0;
     roomLock->unlock();
 }
 
 int RoomData::getBrightness()
 {
     roomLock->lock();
-    int value = brightness;
+    int sum = 0;
+    for(int i = 0; i < 10; i++) {
+        sum += brightness[i];
+    }
+    int value = sum/10;
     roomLock->unlock();
     return value;
 }
@@ -38,7 +54,9 @@ int RoomData::getBrightness()
 void RoomData::setBrightness(int newBrightness)
 {
     roomLock->lock();
-    brightness = newBrightness;
+    brightness[brightnessCounter++] = newBrightness;
+    if(brightnessCounter == 10)
+        brightnessCounter = 0;
     roomLock->unlock();
 }
 

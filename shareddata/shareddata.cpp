@@ -22,14 +22,14 @@ void SharedData::storeNISensorData(double temperatures[], int brightness[])
         roomData[i]->setTemperature(temperatures[i]);
         roomData[i]->setBrightness(brightness[i]);
     }
-    emit sensorDataChanged;
+    emit sensorDataChanged();
 }
 
 void SharedData::storeSpotSensorData(double temperature, int brightness)
 {
     roomData[3]->setTemperature(temperature);
     roomData[3]->setBrightness(brightness);
-    emit sensorDataChanged;
+    emit sensorDataChanged();
 }
 
 void SharedData::getSensorData(double tempBuffer[], int brightnessBuffer[])

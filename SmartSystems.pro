@@ -19,7 +19,8 @@ SOURCES += main.cpp\
         shareddata/roomdata.cpp \
         shareddata/newoutputhandler.cpp \
     logger.cpp \
-    nidaqmx/niinterface.cpp
+    nidaqmx/niinterface.cpp \
+    automodethread.cpp
 
 HEADERS += mainwindow.h \
         roomcontrolwidget.h \
@@ -30,7 +31,10 @@ HEADERS += mainwindow.h \
         shareddata/newoutputhandler.h \
     logger.h \
     nidaqmx/NIDAQmx.h \
-    nidaqmx/niinterface.h
+    nidaqmx/niinterface.h \
+    automodethread.h
+
+
 
 
 

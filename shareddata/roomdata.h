@@ -21,8 +21,8 @@ public:
     bool getHeater();
     void setHeater(bool newHeaterValue);
 private:
-    double temperature, wantedTemperature;
-    int brightness, wantedBrightness, fanspeed, led;
+    double *temperature, wantedTemperature;
+    int *brightness, wantedBrightness, fanspeed, led, tempCounter, brightnessCounter;
     bool heater;
 
     QMutex *roomLock;

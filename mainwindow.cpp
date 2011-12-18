@@ -123,6 +123,9 @@ void MainWindow::updateSensorData()
         (*itemIterator++)->setText(1, QString::number(temperatures[i]));
         (*itemIterator++)->setText(1, QString::number(brightness[i]));
     }
+
+    delete temperatures;
+    delete brightness;
 }
 
 void MainWindow::logEntryAdded()

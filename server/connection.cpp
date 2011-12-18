@@ -85,18 +85,19 @@ void Connection::webConnection()
 
 void Connection::spotConnection()
 {
-    logger->addEntry("Spot connection detected!");
     QDomDocument *xmlDocument = new QDomDocument();
-    xmlDocument->setContent(receiveData);
+    xmlDocument->setContent(*receiveData);
     double temperature;
     bool tempConvertOk = false;
     bool brightnessConvertOk = false;
     int brightness;
-    if(xmlDocument->childNodes().length() == 2) {
-        temperature = xmlDocument->childNodes().at(0).childNodes().item(0).toText().data().toDouble(tempConvertOk);
-        brightness = xmlDocument->childNodes().at(1).childNodes().item(0).toText().data().toDouble(brightnessConvertOk);
+    if(xmlDocument->documentElement().childNodes().length() == 2) {
+        temperature = xmlDocument->documentElement().childNodes().at(0).childNodes().item(0).nodeValue().toDouble(&tempConvertOk);
+        brightness = xmlDocument->documentElement().childNodes().at(1).childNodes().item(0).nodeValue().toDouble(&brightnessConvertOk);
         if(brightnessConvertOk && tempConvertOk) {
             sharedData->storeSpotSensorData(temperature, brightness);
+        } else {
+            logger->addEntry("Convert of brightness or temp NOT ok.");
         }
     } else {
         logger->addEntry("Invalid xml document. Number of childs: " + QString::number(xmlDocument->childNodes().length()));

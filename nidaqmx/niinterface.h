@@ -23,7 +23,31 @@ public:
     void setLedOutputInRoom(int room);
     void autoModeActivated();
 
+public slots:
+    void checkAutomodeThreshold();
+    void sensorUpdate();
+
+
 private:
+    double static const A = -0.00300955;
+    double static const B = 0.000655085;
+    double static const C = -0.000000750788;
+    double static const tempThreshold = 1;
+    int static const brightnessThreshold = 5;
+
+    uInt8 *oneValue;
+    uInt8 *zeroValue;
+
+    QString currentOperation;
+    int DAQmxError;
+    QMutex *niLock;
+    TaskHandle *tempAI;
+    TaskHandle *brightnessAI;
+    TaskHandle pwmAO;
+    TaskHandle *heaterDO;
+    TaskHandle *controlDO;
+
+
     void setPwmControlToRoom(int room);
 
     /**
@@ -40,28 +64,13 @@ private:
     void setControlPins(int value);
     void initTaskHandles();
     void handleDAQmxFailed(int error);
-
     void createAIChannels();
     void createDOChannels();
-
-    uInt8 *oneValue;
-    uInt8 *zeroValue;
-
     double convertADCValueToTemperature(double adcValue);
-    double static const A = 0.00372307;
-    double static const B = -0.000245477;
-    double static const C = 0.00000162287;
-    double static const tempThreshold = 0.2;
-    int static const brightnessThreshold = 2;
+    int convertADCValueToLinearBrightness(double adcValue);
 
-    QString currentOperation;
-    int DAQmxError;
-    QMutex *niLock;
-    TaskHandle *tempAI;
-    TaskHandle *brightnessAI;
-    TaskHandle pwmAO;
-    TaskHandle *heaterDO;
-    TaskHandle *controlDO;
+
+
 };
 
 #endif // NIINTERFACE_H

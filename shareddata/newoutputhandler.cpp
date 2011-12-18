@@ -4,6 +4,7 @@ NewOutputHandler::NewOutputHandler(NIInterface *niInterface, QObject *parent) :
     QObject(parent)
 {
     this->niInterface = niInterface;
+    automodeThread = new AutomodeThread(niInterface);
     outputLock = new QMutex();
 }
 
@@ -20,8 +21,9 @@ void NewOutputHandler::dataChangedInRoom(int roomNumber, int dataType)
 
 void NewOutputHandler::automodeChanged(bool newAutomode)
 {
+    logger->addEntry("Detected automodechange");
     if(newAutomode) {
-        niInterface->autoModeActivated();
+        automodeThread->start();
     }
     newSunspotOutput(5);
 }

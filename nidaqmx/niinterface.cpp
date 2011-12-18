@@ -60,12 +60,12 @@ void NIInterface::handleDAQmxFailed(int error)
     char errorBuffer[512];
     DAQmxGetErrorString(error, errorBuffer, 512);
     logEntry.append(QString::fromLocal8Bit(errorBuffer));
-    logger->addEntry(logEntry);
+    //logger->addEntry(logEntry);
 }
 
 double NIInterface::convertADCValueToTemperature(double adcValue)
 {
-    double resistance = ((110000.0 * adcValue) / (5 - adcValue));
+    double resistance = (10000.0 * (5.16 - adcValue)) / adcValue;
     double temperature = (1 / (A + B * log(resistance) + C * (pow(log(resistance), 3)))) - 273.15;
     return temperature;
 }
@@ -77,44 +77,51 @@ void NIInterface::updateSensorData()
     double *temperatures = new double[3];
     int *brightness = new int[3];
     niLock->lock();
+    currentOperation = "UpdateSensorData";
     for(int i = 0; i < 3; i++) {
         DAQmxErrChk(DAQmxReadAnalogScalarF64(tempAI[i], 0, &rawTemperatures[i], 0));
         DAQmxErrChk(DAQmxReadAnalogScalarF64(brightnessAI[i], 0, &rawBrightness[i], 0));
-        temperatures[i] = 22.2 + i; // <-DEBUG convertADCValueToTemperature(rawTemperatures[i]);
-        brightness[i] = 20 + i; // <-DEBUG convertADCValueToLinearBrightness(rawBrightness[i]);
+
+        temperatures[i] = convertADCValueToTemperature(rawTemperatures[i]);
+        brightness[i] = convertADCValueToLinearBrightness(rawBrightness[i]);
     }
     niLock->unlock();
     sharedData->storeNISensorData(temperatures, brightness);
-    delete rawTemperatures, rawBrightness, temperatures, brightness;
-    logger->addEntry("Sensor data stored!");
+    delete rawTemperatures;
+    delete rawBrightness;
+    delete temperatures;
+    delete brightness;
 }
 
 void NIInterface::autoModeActivated()
 {
-    if(sharedData->getAutomode()) {
-        double *temperatures = new double[4];
-        int *brightness = new int[4];
-        bool brightnessOk = true;
+    double *temperatures = new double[4];
+    int *brightness = new int[4];
+    bool brightnessOk = true;
+    int tries = 0;
 
-        while(sharedData->getAutomode()) {
+    while(sharedData->getAutomode()) {
+        brightnessOk = true;
+        updateSensorData();
+        sharedData->getSensorData(temperatures, brightness);
 
-            updateSensorData();
-            sharedData->getSensorData(temperatures, brightness);
-
-            for(int i = 1; i < 4; i++) {
-                int brightnessDiff = qAbs(sharedData->getWantedBrightnessInRoom(i) - brightness[i - 1]);
-                if( brightnessDiff > brightnessThreshold) {
-                    sharedData->setLedInRoom(i, brightness[i - 1] + 2);
-                    brightnessOk = false; // If any of the brightness tests fail, will be set to false
-                }
+        for(int i = 1; i < 4; i++) {
+            int brightnessDiff = sharedData->getWantedBrightnessInRoom(i) - brightness[i - 1];
+            if( brightnessDiff > brightnessThreshold && sharedData->getLedInRoom(i) <= 100) {
+                sharedData->setLedInRoom(i, brightness[i - 1] + 5);
+                brightnessOk = false; // If any of the brightness tests fail, will be set to false
+            } else if(brightnessDiff < -brightnessThreshold && sharedData->getLedInRoom(i) >= 0) {
+                sharedData->setLedInRoom(i, brightness[i - 1] - 5);
+                brightnessOk = false;
             }
-
-            if(brightnessOk)
-                break;
         }
-
-        delete temperatures, brightness;
+        tries++;
+        if(brightnessOk || tries > 10)
+            break;
     }
+
+    delete temperatures;
+    delete brightness;
 }
 
 void NIInterface::setHeaterOutputInRoom(int room)
@@ -151,18 +158,25 @@ void NIInterface::updatePwm()
 void NIInterface::createAIChannels()
 {
     currentOperation = "CreateVoltChanTempAI0";
-    DAQmxErrChk(DAQmxCreateAIVoltageChan(tempAI[0], "Dev1/ai0", "TempAI0", DAQmx_Val_Diff, 3, 5, DAQmx_Val_Volts, 0));
+    DAQmxErrChk(DAQmxCreateAIVoltageChan(tempAI[0], "Dev1/ai0", "TempAI0", DAQmx_Val_RSE, 0, 5, DAQmx_Val_Volts , 0));
+    DAQmxErrChk(DAQmxSetSampTimingType(tempAI[0], DAQmx_Val_OnDemand));
+
     currentOperation = "CreateVoltChanTempAI1";
-    DAQmxErrChk(DAQmxCreateAIVoltageChan(tempAI[1], "Dev1/ai1", "TempAI1", DAQmx_Val_Diff, 3, 5, DAQmx_Val_Volts, 0));
+    DAQmxErrChk(DAQmxCreateAIVoltageChan(tempAI[1], "Dev1/ai1", "TempAI1", DAQmx_Val_RSE, 0, 5, DAQmx_Val_Volts , 0));
+    DAQmxErrChk(DAQmxSetSampTimingType(tempAI[1], DAQmx_Val_OnDemand));
     currentOperation = "CreateVoltChanTempAI2";
-    DAQmxErrChk(DAQmxCreateAIVoltageChan(tempAI[2], "Dev1/ai2", "TempAI2", DAQmx_Val_Diff, 3, 5, DAQmx_Val_Volts, 0));
+    DAQmxErrChk(DAQmxCreateAIVoltageChan(tempAI[2], "Dev1/ai2", "TempAI2", DAQmx_Val_RSE, 0, 5, DAQmx_Val_Volts , 0));
+    DAQmxErrChk(DAQmxSetSampTimingType(tempAI[2], DAQmx_Val_OnDemand));
 
     currentOperation = "CreateCurrentChanBrightnssAI0";
-    DAQmxErrChk(DAQmxCreateAICurrentChan(brightnessAI[0], "Dev1/ai3", "BrightnessAI0", DAQmx_Val_Diff, 0.000001, 0.01, DAQmx_Val_Amps, DAQmx_Val_Internal, 0, 0));
+    DAQmxErrChk(DAQmxCreateAIVoltageChan(brightnessAI[0], "Dev1/ai3", "BrightnessAI0", DAQmx_Val_RSE, 0, 5, DAQmx_Val_Volts, 0));
+    DAQmxErrChk(DAQmxSetSampTimingType(brightnessAI[0], DAQmx_Val_OnDemand));
     currentOperation = "CreateCurrentChanBrightnssAI1";
-    DAQmxErrChk(DAQmxCreateAICurrentChan(brightnessAI[1], "Dev1/ai4", "BrightnessAI1", DAQmx_Val_Diff, 0.000001, 0.01, DAQmx_Val_Amps, DAQmx_Val_Internal, 0, 0));
+    DAQmxErrChk(DAQmxCreateAIVoltageChan(brightnessAI[1], "Dev1/ai4", "BrightnessAI1", DAQmx_Val_RSE, 0, 5, DAQmx_Val_Volts, 0));
+    DAQmxErrChk(DAQmxSetSampTimingType(brightnessAI[1], DAQmx_Val_OnDemand));
     currentOperation = "CreateCurrentChanBrightnssAI2";
-    DAQmxErrChk(DAQmxCreateAICurrentChan(brightnessAI[2], "Dev1/ai5", "BrightnessAI2", DAQmx_Val_Diff, 0.000001, 0.01, DAQmx_Val_Amps, DAQmx_Val_Internal, 0, 0));
+    DAQmxErrChk(DAQmxCreateAIVoltageChan(brightnessAI[2], "Dev1/ai5", "BrightnessAI2", DAQmx_Val_RSE, 0, 5, DAQmx_Val_Volts, 0));
+    DAQmxErrChk(DAQmxSetSampTimingType(brightnessAI[2], DAQmx_Val_OnDemand));
 }
 
 void NIInterface::createDOChannels()
@@ -181,10 +195,12 @@ void NIInterface::createDOChannels()
 
 void NIInterface::setLedOutputInRoom(int room)
 {
-    double aoVoltage = ( sharedData->getLedInRoom(room) * 5 ) / 100;
+    double aoVoltage = ((double) sharedData->getLedInRoom(room) * 5.0 ) / 100.0;
+    logger->addEntry("Voltage: " + QString::number(aoVoltage));
     currentOperation = "WriteLedPwmAO";
     DAQmxErrChk(DAQmxWriteAnalogScalarF64(pwmAO, 1, 0, aoVoltage, 0));
-    setControlPins(room);
+
+    setControlPins(room - 1);
     updatePwm();
 }
 
@@ -192,19 +208,19 @@ void NIInterface::setControlPins(int value)
 {
     currentOperation = "SetControlPins";
     switch(value) {
-    case 1:
+    case 0:
         DAQmxErrChk(DAQmxWriteDigitalLines(controlDO[0], 1, 1, 2.0, DAQmx_Val_GroupByChannel, zeroValue, 0, 0));
         DAQmxErrChk(DAQmxWriteDigitalLines(controlDO[1], 1, 1, 2.0, DAQmx_Val_GroupByChannel, zeroValue, 0, 0));
         break;
-    case 2:
+    case 1:
         DAQmxErrChk(DAQmxWriteDigitalLines(controlDO[0], 1, 1, 0, DAQmx_Val_GroupByChannel, zeroValue, 0, 0));
         DAQmxErrChk(DAQmxWriteDigitalLines(controlDO[1], 1, 1, 0, DAQmx_Val_GroupByChannel, oneValue, 0, 0));
         break;
-    case 3:
+    case 2:
         DAQmxErrChk(DAQmxWriteDigitalLines(controlDO[0], 1, 1, 0, DAQmx_Val_GroupByChannel, oneValue, 0, 0));
         DAQmxErrChk(DAQmxWriteDigitalLines(controlDO[1], 1, 1, 0, DAQmx_Val_GroupByChannel, zeroValue, 0, 0));
         break;
-    case 4:
+    case 3:
         DAQmxErrChk(DAQmxWriteDigitalLines(controlDO[0], 1, 1, 0, DAQmx_Val_GroupByChannel, oneValue, 0, 0));
         DAQmxErrChk(DAQmxWriteDigitalLines(controlDO[1], 1, 1, 0, DAQmx_Val_GroupByChannel, oneValue, 0, 0));
         break;
@@ -216,9 +232,27 @@ void NIInterface::setFanOutput()
     double aoVoltage = ( sharedData->getFanInRoom(2) * 5 ) / 100;
     currentOperation = "WriteFanPwmAO";
     DAQmxErrChk(DAQmxWriteAnalogScalarF64(pwmAO, 1, 0, aoVoltage, 0));
-    setControlPins(4);
+    setControlPins(3);
     updatePwm();
 }
 
+int NIInterface::convertADCValueToLinearBrightness(double adcValue)
+{
+    double percentage = ((adcValue - 2.2) * 100.0 / 1.9);
+    if(percentage > 100)
+        return 100;
+    else if(percentage < 0)
+        return 0;
+    else
+        return (int) percentage;
+}
 
+void NIInterface::checkAutomodeThreshold()
+{
+    autoModeActivated();
+}
 
+void NIInterface::sensorUpdate()
+{
+    updateSensorData();
+}

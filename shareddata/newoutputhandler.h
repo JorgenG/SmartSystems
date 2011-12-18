@@ -10,6 +10,7 @@
 #include "shareddata.h"
 #include <QMutex>
 #include <QHostAddress>
+#include "automodethread.h"
 
 /**
  * This class handles the tasks needed to be performed
@@ -31,6 +32,7 @@ private:
     NIInterface *niInterface;
     QByteArray generateXmlData(int dataType);
     QMutex *outputLock;
+    AutomodeThread *automodeThread;
 
 signals:
 
