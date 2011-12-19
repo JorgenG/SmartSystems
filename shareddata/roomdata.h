@@ -2,6 +2,11 @@
 #define ROOMDATA_H
 #include <QMutex>
 
+/**
+  This class contains all data stored in a particular room. Is only
+  used by the Shared Data class, and implements mutex locks to avoid
+  synchronization issues.
+  */
 class RoomData
 {
 public:

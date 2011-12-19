@@ -25,11 +25,24 @@ class NewOutputHandler : public QObject
 public:
     explicit NewOutputHandler(NIInterface *niInterface = 0, QObject *parent = 0);
 private:
+    /**
+      If new sunspot is detected it will call this method. This method
+      then generates a new xml message to be sent to the sunspot.
+      */
     void newSunspotOutput(int dataType);
+
+    /**
+      If new NI output is detected this method will call the appropriate
+      functions in the niInterface objects to change the output.
+      */
     void newNIOutput(int room, int dataType);
     static const int sunspotRoomNumber = 4;
 
     NIInterface *niInterface;
+
+    /**
+      Generates xml data for sending to the sunspot application.
+      */
     QByteArray generateXmlData(int dataType);
     QMutex *outputLock;
     AutomodeThread *automodeThread;

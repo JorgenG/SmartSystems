@@ -6,6 +6,13 @@
 
 #include "roomdata.h"
 
+/**
+  This class is a global synchronized data object. Holds all the data for
+  all rooms, including wanted output, regulation data and monitoring values.
+
+  Methods are synchronized using a lock in each room, which is represented by
+  the RoomData class.
+*/
 class SharedData : public QObject
 {
     Q_OBJECT

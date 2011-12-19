@@ -17,10 +17,37 @@ class NIInterface : public QObject
     Q_OBJECT
 public:
     explicit NIInterface(QObject *parent = 0);    
+
+    /**
+      This method reads all the sensor data connected to the NI device and then
+      stores these values in the sharedData object.
+      */
     void updateSensorData();
+
+    /**
+      Sets the heater output in a room. This method asks for the curren ouput
+      from the sharedData object.
+      */
     void setHeaterOutputInRoom(int room);
+
+    /**
+      Sets the fan output in a room. This method asks for the current output
+      from the sharedData object.
+      */
     void setFanOutput();
+
+    /**
+      Sets the led output in a room. This method asks for the current output
+      from the sharedData object.
+      */
     void setLedOutputInRoom(int room);
+
+    /**
+      This method is called when the automode is activated and the NI device
+      should regulate. Will perform 10 tries to regulate, and if the wanted
+      state isnt achieved it will calculate the reason and stop regulating. Will
+      then check if regulation is possible 1 second later.
+      */
     void autoModeActivated();
 
 public slots:
