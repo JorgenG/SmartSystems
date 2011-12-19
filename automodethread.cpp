@@ -13,7 +13,8 @@ void AutomodeThread::run()
 
 void AutomodeThread::automodeUpdate()
 {
-    niInterface->autoModeActivated();
-    if(sharedData->getAutomode())
-        QTimer::singleShot(1000, this, SLOT(automodeUpdate()));
+    while(sharedData->getAutomode()) {
+        niInterface->autoModeActivated();
+        QThread::msleep(1000);
+    }
 }

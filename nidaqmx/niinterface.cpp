@@ -60,7 +60,7 @@ void NIInterface::handleDAQmxFailed(int error)
     char errorBuffer[512];
     DAQmxGetErrorString(error, errorBuffer, 512);
     logEntry.append(QString::fromLocal8Bit(errorBuffer));
-    //logger->addEntry(logEntry);
+    logger->addEntry(logEntry);
 }
 
 double NIInterface::convertADCValueToTemperature(double adcValue)
@@ -70,55 +70,110 @@ double NIInterface::convertADCValueToTemperature(double adcValue)
     return temperature;
 }
 
+int NIInterface::convertADCValueToLinearBrightness(double adcValue)
+{
+    double percentage = ((adcValue - 2.0) * 100.0 / 2.1);
+    if(percentage > 100)
+        return 100;
+    else if(percentage < 0)
+        return 0;
+    else
+        return (int) percentage;
+}
+
 void NIInterface::updateSensorData()
+{
+    if(!sharedData->getAutomode()) {
+        double *rawTemperatures = new double[3];
+        double *rawBrightness = new double[3];
+        double *temperatures = new double[3];
+        int *brightness = new int[3];
+        niLock->lock();
+        currentOperation = "UpdateSensorData";
+        for(int i = 0; i < 3; i++) {
+            DAQmxErrChk(DAQmxReadAnalogScalarF64(tempAI[i], 0, &rawTemperatures[i], 0));
+            DAQmxErrChk(DAQmxReadAnalogScalarF64(brightnessAI[i], 0, &rawBrightness[i], 0));
+            temperatures[i] = convertADCValueToTemperature(rawTemperatures[i]);
+            brightness[i] = convertADCValueToLinearBrightness(rawBrightness[i]);
+        }
+        niLock->unlock();
+        sharedData->storeNISensorData(temperatures, brightness);
+        delete rawTemperatures;
+        delete rawBrightness;
+        delete temperatures;
+        delete brightness;
+    }
+}
+
+void NIInterface::autoModeActivated()
 {
     double *rawTemperatures = new double[3];
     double *rawBrightness = new double[3];
     double *temperatures = new double[3];
     int *brightness = new int[3];
-    niLock->lock();
-    currentOperation = "UpdateSensorData";
-    for(int i = 0; i < 3; i++) {
-        DAQmxErrChk(DAQmxReadAnalogScalarF64(tempAI[i], 0, &rawTemperatures[i], 0));
-        DAQmxErrChk(DAQmxReadAnalogScalarF64(brightnessAI[i], 0, &rawBrightness[i], 0));
-
-        temperatures[i] = convertADCValueToTemperature(rawTemperatures[i]);
-        brightness[i] = convertADCValueToLinearBrightness(rawBrightness[i]);
-    }
-    niLock->unlock();
-    sharedData->storeNISensorData(temperatures, brightness);
-    delete rawTemperatures;
-    delete rawBrightness;
-    delete temperatures;
-    delete brightness;
-}
-
-void NIInterface::autoModeActivated()
-{
-    double *temperatures = new double[4];
-    int *brightness = new int[4];
-    bool brightnessOk = true;
+    bool *brightnessOk = new bool[3];
     int tries = 0;
 
+
+
     while(sharedData->getAutomode()) {
-        brightnessOk = true;
-        updateSensorData();
-        sharedData->getSensorData(temperatures, brightness);
+        brightnessOk[0] = true;
+        brightnessOk[1] = true;
+        brightnessOk[2] = true;
+
 
         for(int i = 1; i < 4; i++) {
+            DAQmxErrChk(DAQmxReadAnalogScalarF64(tempAI[i - 1], 0, &rawTemperatures[i - 1], 0));
+            DAQmxErrChk(DAQmxReadAnalogScalarF64(brightnessAI[i - 1], 0, &rawBrightness[i - 1], 0));
+            temperatures[i - 1] = convertADCValueToTemperature(rawTemperatures[i-1]);
+            brightness[i - 1] = convertADCValueToLinearBrightness(rawBrightness[i-1]);
+
+            // Regulate the temperature only ONCE pr iteration
+            if(tries == 0 && (i == 2 || i == 3)) {
+                if(temperatures[i - 1] < sharedData->getWantedTempInRoom(i) - 0.5) {
+                    sharedData->setHeaterInRoom(i, true);
+                    sharedData->setFanInRoom(i, 0);
+                }
+                else if(temperatures[i - 1] > sharedData->getWantedTempInRoom(i) ) {
+                    sharedData->setHeaterInRoom(i, false);
+                    sharedData->setFanInRoom(i, 100);
+                }
+            }
+
             int brightnessDiff = sharedData->getWantedBrightnessInRoom(i) - brightness[i - 1];
-            if( brightnessDiff > brightnessThreshold && sharedData->getLedInRoom(i) <= 100) {
-                sharedData->setLedInRoom(i, brightness[i - 1] + 5);
-                brightnessOk = false; // If any of the brightness tests fail, will be set to false
-            } else if(brightnessDiff < -brightnessThreshold && sharedData->getLedInRoom(i) >= 0) {
-                sharedData->setLedInRoom(i, brightness[i - 1] - 5);
-                brightnessOk = false;
+            logger->addEntry(QString::number(brightnessDiff));
+
+            if( brightnessDiff > brightnessThreshold && sharedData->getLedInRoom(i) <= 90) {
+                sharedData->setLedInRoom(i, sharedData->getLedInRoom(i) + 10);
+                brightnessOk[i - 1] = false; // If any of the brightness tests fail, will be set to false
+            } else if(brightnessDiff < -brightnessThreshold && sharedData->getLedInRoom(i) >= 10) {
+                sharedData->setLedInRoom(i, sharedData->getLedInRoom(i) - 10);
+                brightnessOk[i-1] = false;
+            }
+            if(brightnessOk[i - 1])
+                continue;
+            if(tries >= 10) {
+                if(brightness[i - 1] < sharedData->getWantedBrightnessInRoom(i)) {
+                    sharedData->setLedInRoom(i, 100);
+                } else {
+                    sharedData->setLedInRoom(i, 0);
+                }
             }
         }
+
+
+        sharedData->storeNISensorData(temperatures, brightness);
+
+        if(tries >= 10) {
+            break;
+        }
         tries++;
-        if(brightnessOk || tries > 10)
+        if(brightnessOk[0] && brightnessOk[1] && brightnessOk[2])
             break;
     }
+
+
+
 
     delete temperatures;
     delete brightness;
@@ -236,16 +291,7 @@ void NIInterface::setFanOutput()
     updatePwm();
 }
 
-int NIInterface::convertADCValueToLinearBrightness(double adcValue)
-{
-    double percentage = ((adcValue - 2.2) * 100.0 / 1.9);
-    if(percentage > 100)
-        return 100;
-    else if(percentage < 0)
-        return 0;
-    else
-        return (int) percentage;
-}
+
 
 void NIInterface::checkAutomodeThreshold()
 {

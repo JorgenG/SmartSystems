@@ -140,11 +140,6 @@ void MainWindow::logEntryAdded()
 
 }
 
-void MainWindow::testNewEntry()
-{
-    logger->addEntry("Testmessage");
-}
-
 void MainWindow::autoModeChanged(bool newValue)
 {
     sharedData->setAutomode(newValue);

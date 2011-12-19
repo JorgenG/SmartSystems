@@ -6,6 +6,11 @@
 #include "nidaqmx/niinterface.h"
 #include <QTimer>
 
+/**
+  This class is responsible for updating the output of the NI device
+  when in regulated mode. The thread will stop executing when the
+  automode boolean in shareddata is set to false.
+  */
 class AutomodeThread : public QThread
 {
     Q_OBJECT
